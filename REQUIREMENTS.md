@@ -7,6 +7,8 @@
 - The user should be able to filter their search based on different parameters
 - The user should be able to sort their search based on different parameters
 - The user should be able to choose how their chicken is sold, e.g. auction, auction with reserve, fixed price
+- The user can open up more information on a current listing
+- The user verifies their bidding on a listing
 
 ### Non-Functional Requirements
 - The website should work on both desktop and mobile
@@ -16,7 +18,7 @@
 
 ### Use Cases
 1. Users can add pictures for items they are selling
-  - **Pre-condition:** User has an account and is logged i
+  - **Pre-condition:** User has an account and is logged in
 
   - **Trigger:** User clicks "Add pictures" when on Selling page
 
@@ -73,3 +75,31 @@
 	- **Alternate Sequence:**
 	  1. The user enters invalid input into the duration field
 	  2. The user is prompted to edit the duration
+
+5. The user can open up more information on a current listing
+	- **Pre-condition:** None
+
+	- **Trigger:** User clicks "More Info" on a listing
+
+	- **Primary Sequence:**
+	  1. A box opens up with any extra information or details the seller wanted to provide
+
+	- **Primary Postcondition:**  Users can see additional information the seller gave
+	
+	- **Alternate Sequence:**
+	  1. No extra information was given, so the box is empty
+
+6.  The user verifies their bidding on a listing
+	- **Pre-condition:** The user is signed in
+
+	- **Trigger:** User clicks on "Bid" on a listing
+
+	- **Primary Sequence:** 
+	  1. User is prompted to verify their bidding via a "Proceed" button
+	  2. User clicks on button
+
+	- **Primary Postconditions:** Website displays a message saying "Bidding Received"
+
+	- **Alternate Sequence:**
+	  1. The user doesn't have a payment method saved
+	  2. User is prompted to update their payment method
