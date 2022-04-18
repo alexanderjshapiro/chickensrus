@@ -3,6 +3,10 @@
 - Users can view all items sellers are currently selling 
 - Users can add pictures for items they are selling
 - Users can save items for later
+- Users are able to message each other 
+- Users are able to add reviews/ratings
+- Buyers are able to choose payment type when purchasing
+- Sellers are able to choose bidding time and duration (for auctions)
 - The user should be able to search for specific listings
 - The user should be able to filter their search based on different parameters
 - The user should be able to sort their search based on different parameters
@@ -13,6 +17,8 @@
 - Notifications should be sent to buyers interested in a chicken whose auction is ending soon
 - Users can stay signed into their account
 - Website can save payment method
+- Website is displayed in correct language setting for user
+- Website should show most popular on homescreen
 
 ### Use Cases
 1. Users can add pictures for items they are selling
@@ -67,6 +73,33 @@
 	- **Primary Sequence:**
 	  1. The user selects if they want to create an auction, or sell at a fixed price
 	  2. The user selects an optional reserve price and a duration if they select an auction, or a price if they select fixed price
+
+5. Users are able to message other users
+	- **Pre-condition:** The user has an account and is logged in
+	
+	- **Trigger:** User clicks on "Message" on other user's profile
+	
+	- **Primary Sequence:**
+	  1. User selects to message other user
+	  2. Chat window opens
+	  3. User able to input text and send
+	  
+	- **Primary Postconditions:** Users able to see messages sent
+	
+6. Users are able to add reviews/ratings
+	- **Pre-condition:** The user has an account and is logged in 
+	
+	- **Trigger:** User clicks on "Add Rating or Review" under the listing or User Profile
+	
+	- **Primary Sequence:** 
+	 1. User/Chicken listing is prompted for a rating 
+	 2. Text box for optional input if leaving review
+	 
+	- **Primary Postconditions:** Users able to see and input reviews/ratings for user profiles and chicken listings 
+	
+	- **Alternate Sequence:** 
+	  1. User does not input rating
+	  2. User is prompted to input rating or to go back to listing
 	
 	- **Primary Postconditions:** The user is allowed to continue creating their listing 
 	
