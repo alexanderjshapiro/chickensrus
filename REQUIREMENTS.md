@@ -1,4 +1,8 @@
 ### Functional Requirements
+- Login
+- Logout
+- Create account
+- Delete account
 - User profiles
 - Users can view all items sellers are currently selling 
 - Users can add pictures for items they are selling
