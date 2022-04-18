@@ -72,13 +72,19 @@
 	  2. The user is prompted to edit their query
 
 4. The user should be able to choose how their chicken is sold, e.g. auction, auction with reserve, fixed price
-   - **Pre-condition:** The user is logged in and is creating a listing
+	- **Pre-condition:** The user is logged in and is creating a listing
 	
 	- **Trigger:** The user creates a listing
 	
 	- **Primary Sequence:**
 	  1. The user selects if they want to create an auction, or sell at a fixed price
 	  2. The user selects an optional reserve price and a duration if they select an auction, or a price if they select fixed price
+
+	- **Primary Postconditions:** The user is allowed to continue creating their listing 
+	
+	- **Alternate Sequence:**
+	  1. The user enters invalid input into the duration field
+	  2. The user is prompted to edit the duration
 
 5. Users are able to message other users
 	- **Pre-condition:** The user has an account and is logged in
@@ -106,12 +112,6 @@
 	- **Alternate Sequence:** 
 	  1. User does not input rating
 	  2. User is prompted to input rating or to go back to listing
-	
-	- **Primary Postconditions:** The user is allowed to continue creating their listing 
-	
-	- **Alternate Sequence:**
-	  1. The user enters invalid input into the duration field
-	  2. The user is prompted to edit the duration
 
 7. The user can open up more information on a current listing
 	- **Pre-condition:** None
