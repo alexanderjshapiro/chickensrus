@@ -113,7 +113,7 @@
 	  1. The user enters invalid input into the duration field
 	  2. The user is prompted to edit the duration
 
-5. The user can open up more information on a current listing
+7. The user can open up more information on a current listing
 	- **Pre-condition:** None
 
 	- **Trigger:** User clicks "More Info" on a listing
@@ -126,7 +126,7 @@
 	- **Alternate Sequence:**
 	  1. No extra information was given, so the box is empty
 
-6.  The user verifies their bidding on a listing
+8.  The user verifies their bidding on a listing
 	- **Pre-condition:** The user is signed in
 
 	- **Trigger:** User clicks on "Bid" on a listing
@@ -140,3 +140,5 @@
 	- **Alternate Sequence:**
 	  1. The user doesn't have a payment method saved
 	  2. User is prompted to update their payment method
+
+
