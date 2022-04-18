@@ -28,32 +28,32 @@
 
 ### Use Cases
 1. Users can add pictures for items they are selling
-  - **Pre-condition:** User has an account and is logged in
+  	- **Pre-condition:** User has an account and is logged in
 
-  - **Trigger:** User clicks "Add pictures" when on Selling page
+  	- **Trigger:** User clicks "Add pictures" when on Selling page
 
-  - **Primary Sequence:**
-    1. Website prompts user to upload photos
-    2. User uploads photos they want
-    3. Website saves photos to item being listed 
+  	- **Primary Sequence:**
+	   1. Website prompts user to upload photos
+	   2. User uploads photos they want
+	   3. Website saves photos to item being listed 
 
-  **Primary Postconditions:** Users can see photos of item that is sold
+  	- **Primary Postconditions:** Users can see photos of item that is sold
   
-  **Alternative Sequence:**
-  1. User tries to upload non compatible file as photo
-    - Website displays error message to customer
-    - Website prompts user to upload compatible file
+ 	 - **Alternative Sequence:**
+  	   1. User tries to upload non compatible file as photo
+    	   - Website displays error message to customer
+    	   - Website prompts user to upload compatible file
 
 2. Users can save items for later
-  - **Pre-Condition:** User has an account and is logged in
+  	- **Pre-Condition:** User has an account and is logged in
 
-  - **Trigger:** User clicks on "Save for Later" on item listing
+  	- **Trigger:** User clicks on "Save for Later" on item listing
 
-  - **Primary Sequence:**
-    1. Website saves item to user's "Saved" items
-    2. Website displays message saying item has been saved  
+  	- **Primary Sequence:**
+    	1. Website saves item to user's "Saved" items
+    	2. Website displays message saying item has been saved  
 
-  - **Primary Postconditions:** Users can see their saved items on their profile ## Requirements
+  	- **Primary Postconditions:** Users can see their saved items on their profile 
 
 3. The user should be able to search for specific listings
 	- **Pre-condition:** None
