@@ -19,8 +19,9 @@
     <meta name="theme-color" content="#000000">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
-<body>
+<body style="height:2000px">
 {% with messages = get_flashed_messages() %}
 {% if messages %}
 <div class="row flashed-messages">
@@ -32,8 +33,78 @@
 {% endwith %}
 
 <header>
-    <!--  TODO: Navigation Bar  -->
-    <!--  TODO: Search Bar  -->
+    <!--Navigation Bar-->
+    <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+        <div class="container">
+        <a href="#"
+           class="navbar-brand mb-0 h1">
+            <img
+            class="d-inline-block align-middle"
+            src="http://127.0.0.1:5000/static/images/chicken.jpeg"
+            width="60" Height="80" >
+            Chickens "R" Us
+        </a>
+        <button
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        class="navbar-toggler"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+            class="collapse.navbar-collapse"
+            id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a href="#" class="nav-link active">
+                        Home
+                    </a>
+                </li>
+                <!-- DROPDOWN BUTTON FOR USER HERE -->
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle"
+                     id="navbarDropdown"
+                     role="button"
+                     data-bs-toggle="dropdown"
+                     aria-expanded="false"
+                     >
+                       User
+                    </a>
+                    <ul class="dropdown-menu"
+                    aria-labelledby="navbarDropdown">
+                      <li><a href="#"
+                      class="dropdown-item">Login</a></li>
+                      <li><a href="#"
+                      class="dropdown-item">Logout</a></li>
+                      <li><a href="#"
+                      class="dropdown-item">Sign-Up</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        Listing
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        Cart
+                    </a>
+                </li>
+            </ul>
+        </div>
+     </div>
+    </nav>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- Search Bar  -->
+    <form class="d-flex">
+        <input type="text" class="form-control me-2">
+        <button type="submit" class="btn
+         btn-outline-success" >Search</button>
+    </form>
 </header>
 
 <div class="container">
