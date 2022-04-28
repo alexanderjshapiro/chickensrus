@@ -1,0 +1,16 @@
+@charset "UTF-8";
+
+.flashed-messages {
+    width: 100%;
+    padding: 15px;
+    background-color: red;
+    font-weight: bolder;
+}
+
+#chicken {
+    width: 300px;
+}
+
+.error {
+    color: red;
+}
