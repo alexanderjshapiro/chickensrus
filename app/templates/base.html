@@ -5,9 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chickens "R" Us</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicons/apple-touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicons/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicons/favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180"
+          href="{{ url_for('static', filename='favicons/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32"
+          href="{{ url_for('static', filename='favicons/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16"
+          href="{{ url_for('static', filename='favicons/favicon-16x16.png') }}">
     <link rel="manifest" href="{{ url_for('static', filename='favicons/site.webmanifest') }}">
     <link rel="mask-icon" href="{{ url_for('static', filename='favicons/safari-pinned-tab.svg') }}" color="#000000">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicons/favicon.ico') }}">
@@ -18,11 +21,25 @@
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
 </head>
 <body>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="row flashed-messages">
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
 <header>
     <!--  TODO: Navigation Bar  -->
     <!--  TODO: Search Bar  -->
 </header>
-{% block content %} {% endblock %}
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+
 <footer>
     <!--  TODO: Legal Information  -->
 </footer>

@@ -1,28 +1,82 @@
 from app import chickensrus
-from flask import render_template, escape
+from app.forms import *
+from app.models import User, db, query_user
+from flask import render_template, escape, redirect, url_for, request
+from flask_login import current_user, login_user, logout_user, login_required
 
 
 @chickensrus.route('/')
-@chickensrus.route('/index')
-@chickensrus.route('/home')
-@chickensrus.route('/default')
 def home():
     return render_template('home.html')
 
 
-@chickensrus.route('/login')
-def login():
-    return render_template('login.html')
+@chickensrus.route('/signup', methods=['GET', 'POST'])
+def signup():
+    form = SignUp()
+
+    error = None
+    if form.validate_on_submit():
+        user = query_user([form.username.data, form.email.data])
+        if user is not None:
+            error = 'Account already exists.'
+        else:
+            user = User()
+            user.username = form.username.data
+            user.email = form.email.data
+            user.set_password(form.password.data)
+            db.session.add(user)
+            db.session.commit()
+            login_user(user)
+            return redirect(request.args.get("next") or url_for('home'))
+
+    return render_template('signup.html', form=form, error=error)
+
+
+@chickensrus.route('/signin', methods=['GET', 'POST'])
+def signin():
+    form = SignIn()
+
+    error = None
+    if form.validate_on_submit():
+        user = query_user([form.username.data])
+        if user is not None and user.password_matches(form.password.data):
+            login_user(user)
+            return redirect(request.args.get("next") or url_for('home'))
+        else:
+            error = 'Incorrect username or password.'
+
+    return render_template('signin.html', form=form, error=error)
+
+
+@chickensrus.route('/signout')
+def signout():
+    logout_user()
+
+    return redirect(url_for('home'))
 
 
 @chickensrus.route('/account')
+@login_required
 def account():
     return render_template('account.html')
 
 
-@chickensrus.route('/listing/<int:listingID>')
-def listing(listingID):
-    return render_template('listing.html', listingID=escape(listingID))
+@chickensrus.route('/account/delete', methods=['GET', 'POST'])
+@login_required
+def deleteaccount():
+    form = DeleteAccount()
+
+    if form.is_submitted() and form.confirm_deletion.data is True:
+        User.query.filter(User.username == current_user.username).delete()
+        db.session.commit()
+        return redirect(url_for('home'))
+
+    return render_template('deleteaccount.html', form=form)
+
+
+@chickensrus.route('/listing/<int:listing_id>')
+def listing(listing_id):
+    return render_template('listing.html', listing_id=escape(listing_id))
 
 
 @chickensrus.route('/cart')
