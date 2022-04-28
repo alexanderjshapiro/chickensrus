@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="{{ url_for('home') }}">Home</a>
+
+<div class="row">
+    <h1>Account</h1>
+</div>
+
+<form method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.password.label }}<br>
+        {{ form.password(size=32) }}
+    </p>
+    <p>
+        {{ form.image.label }}<br>
+        {{ form.image(size=32) }}
+    </p>
+    <p>
+        {{ form.first_name.label }}<br>
+        {{ form.first_name(size=32) }}
+    </p>
+    <p>
+        {{ form.last_name.label }}<br>
+        {{ form.last_name(size=32) }}
+    </p>
+    <p>
+        {{ form.username.label }}<br>
+        {{ form.username(size=32) }}
+    </p>
+    <p>
+        {{ form.email.label }}<br>
+        {{ form.email(size=32) }}
+    </p>
+    <p>
+        {{ form.new_password.label }}<br>
+        {{ form.new_password(size=32) }}
+    </p>
+    <p>
+        {{ form.repeat_password.label }}<br>
+        {{ form.repeat_password(size=32) }}
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>
+
+{% if error %}
+<p class="error">{{ error }}</p>
+{% endif %}
+
+{% for field, errors in form.errors.items() %}
+{% for error in errors %}
+<p class="error">{{ error }}</p>
+{% endfor %}
+{% endfor %}
+
+<div class="row">
+    <a href="{{ url_for('account_delete') }}">Delete Account</a>
+</div>
+{% endblock %}

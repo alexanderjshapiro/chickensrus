@@ -9,8 +9,11 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(32), unique=True)
     email = db.Column(db.String(254), unique=True)
     password_hash = db.Column(db.String(256))
-    date_joined = db.Column(db.DateTime(), default=datetime.utcnow, index=True)
+    date_joined = db.Column(db.DateTime(), default=datetime.utcnow)
     listings = db.relationship("Listing", backref='user', lazy='dynamic')
+    image = db.BLOB
+    first_name = db.Column(db.String(64))
+    last_name = db.Column(db.String(64))
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

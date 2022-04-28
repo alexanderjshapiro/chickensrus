@@ -11,7 +11,7 @@ def home():
 
 
 @chickensrus.route('/signup', methods=['GET', 'POST'])
-def signup():
+def sign_up():
     form = SignUp()
 
     error = None
@@ -33,7 +33,7 @@ def signup():
 
 
 @chickensrus.route('/signin', methods=['GET', 'POST'])
-def signin():
+def sign_in():
     form = SignIn()
 
     error = None
@@ -49,7 +49,7 @@ def signin():
 
 
 @chickensrus.route('/signout')
-def signout():
+def sign_out():
     logout_user()
 
     return redirect(url_for('home'))
@@ -61,17 +61,46 @@ def account():
     return render_template('account.html')
 
 
+@chickensrus.route('/account/edit', methods=['GET', 'POST'])
+@login_required
+def account_edit():
+    form = AccountEdit(
+        first_name=current_user.first_name,
+        last_name=current_user.last_name,
+        username=current_user.username,
+        email=current_user.email
+    )
+
+    error = None
+    if form.validate_on_submit():
+        if current_user.password_matches(form.password.data):
+            current_user.image = form.image.data
+            current_user.first_name = form.first_name.data
+            current_user.last_name = form.last_name.data
+            current_user.username = form.username.data
+            current_user.email = form.email.data
+            if form.new_password.data:
+                current_user.set_password(form.new_password.data)
+            db.session.add(current_user)
+            db.session.commit()
+            return redirect(url_for('home'))
+        else:
+            error = 'Incorrect password.'
+
+    return render_template('account_edit.html', form=form, error=error)
+
+
 @chickensrus.route('/account/delete', methods=['GET', 'POST'])
 @login_required
-def deleteaccount():
-    form = DeleteAccount()
+def account_delete():
+    form = AccountDelete()
 
     if form.is_submitted() and form.confirm_deletion.data is True:
-        User.query.filter(User.username == current_user.username).delete()
+        db.session.delete(current_user)
         db.session.commit()
         return redirect(url_for('home'))
 
-    return render_template('deleteaccount.html', form=form)
+    return render_template('account_delete.html', form=form)
 
 
 @chickensrus.route('/listing/<int:listing_id>')
