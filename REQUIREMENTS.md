@@ -28,32 +28,32 @@
 
 ### Use Cases
 1. Users can add pictures for items they are selling
-  - **Pre-condition:** User has an account and is logged in
+  	- **Pre-condition:** User has an account and is logged in
 
-  - **Trigger:** User clicks "Add pictures" when on Selling page
+  	- **Trigger:** User clicks "Add pictures" when on Selling page
 
-  - **Primary Sequence:**
-    1. Website prompts user to upload photos
-    2. User uploads photos they want
-    3. Website saves photos to item being listed 
+  	- **Primary Sequence:**
+	   1. Website prompts user to upload photos
+	   2. User uploads photos they want
+	   3. Website saves photos to item being listed 
 
-  **Primary Postconditions:** Users can see photos of item that is sold
+  	- **Primary Postconditions:** Users can see photos of item that is sold
   
-  **Alternative Sequence:**
-  1. User tries to upload non compatible file as photo
-    - Website displays error message to customer
-    - Website prompts user to upload compatible file
+ 	 - **Alternative Sequence:**
+  	   1. User tries to upload non compatible file as photo
+    	   - Website displays error message to customer
+    	   - Website prompts user to upload compatible file
 
 2. Users can save items for later
-  - **Pre-Condition:** User has an account and is logged in
+  	- **Pre-Condition:** User has an account and is logged in
 
-  - **Trigger:** User clicks on "Save for Later" on item listing
+  	- **Trigger:** User clicks on "Save for Later" on item listing
 
-  - **Primary Sequence:**
-    1. Website saves item to user's "Saved" items
-    2. Website displays message saying item has been saved  
+  	- **Primary Sequence:**
+    	1. Website saves item to user's "Saved" items
+    	2. Website displays message saying item has been saved  
 
-  - **Primary Postconditions:** Users can see their saved items on their profile ## Requirements
+  	- **Primary Postconditions:** Users can see their saved items on their profile 
 
 3. The user should be able to search for specific listings
 	- **Pre-condition:** None
@@ -72,13 +72,19 @@
 	  2. The user is prompted to edit their query
 
 4. The user should be able to choose how their chicken is sold, e.g. auction, auction with reserve, fixed price
-   - **Pre-condition:** The user is logged in and is creating a listing
+	- **Pre-condition:** The user is logged in and is creating a listing
 	
 	- **Trigger:** The user creates a listing
 	
 	- **Primary Sequence:**
 	  1. The user selects if they want to create an auction, or sell at a fixed price
 	  2. The user selects an optional reserve price and a duration if they select an auction, or a price if they select fixed price
+
+	- **Primary Postconditions:** The user is allowed to continue creating their listing 
+	
+	- **Alternate Sequence:**
+	  1. The user enters invalid input into the duration field
+	  2. The user is prompted to edit the duration
 
 5. Users are able to message other users
 	- **Pre-condition:** The user has an account and is logged in
@@ -106,14 +112,8 @@
 	- **Alternate Sequence:** 
 	  1. User does not input rating
 	  2. User is prompted to input rating or to go back to listing
-	
-	- **Primary Postconditions:** The user is allowed to continue creating their listing 
-	
-	- **Alternate Sequence:**
-	  1. The user enters invalid input into the duration field
-	  2. The user is prompted to edit the duration
 
-5. The user can open up more information on a current listing
+7. The user can open up more information on a current listing
 	- **Pre-condition:** None
 
 	- **Trigger:** User clicks "More Info" on a listing
@@ -126,7 +126,7 @@
 	- **Alternate Sequence:**
 	  1. No extra information was given, so the box is empty
 
-6.  The user verifies their bidding on a listing
+8.  The user verifies their bidding on a listing
 	- **Pre-condition:** The user is signed in
 
 	- **Trigger:** User clicks on "Bid" on a listing
@@ -140,3 +140,5 @@
 	- **Alternate Sequence:**
 	  1. The user doesn't have a payment method saved
 	  2. User is prompted to update their payment method
+
+
