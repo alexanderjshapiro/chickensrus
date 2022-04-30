@@ -4,7 +4,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import *
 
 
-class SignUp(FlaskForm):
+class AccountCreate(FlaskForm):
     username = StringField('Username', validators=[DataRequired(message='Invalid username.')])
     email = StringField('Email', validators=[DataRequired(message='Invalid email address.'), Email()])
     password = PasswordField('Password', validators=[DataRequired(message='Invalid password.')])
@@ -15,7 +15,7 @@ class SignUp(FlaskForm):
     submit = SubmitField('Sign Up')
 
 
-class SignIn(FlaskForm):
+class AccountLogin(FlaskForm):
     username = StringField('Username', validators=[DataRequired(message='Invalid username.')])
     password = PasswordField('Password', validators=[DataRequired(message='Invalid password.')])
     remember_me = BooleanField('Remember Me')
@@ -25,7 +25,7 @@ class SignIn(FlaskForm):
 class AccountEdit(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired(message='Invalid password.')])
 
-    image = FileField('Image', validators=[
+    picture = FileField('Image', validators=[
         FileAllowed(['jpg', 'jpe', 'jpeg', 'png', 'gif', 'svg', 'bmp'], 'Invalid file type.')
     ])
     first_name = StringField('First Name')

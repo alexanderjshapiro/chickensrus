@@ -11,7 +11,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(256))
     date_joined = db.Column(db.DateTime(), default=datetime.utcnow)
     listings = db.relationship("Listing", backref='user', lazy='dynamic')
-    image = db.BLOB
+    picture = db.Column(db.BLOB)
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
 

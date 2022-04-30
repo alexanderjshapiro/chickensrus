@@ -1,3 +1,5 @@
+import base64
+
 from app import chickensrus
 from app.forms import *
 from app.models import User, db, query_user
@@ -10,9 +12,16 @@ def home():
     return render_template('home.html')
 
 
-@chickensrus.route('/signup', methods=['GET', 'POST'])
-def sign_up():
-    form = SignUp()
+@chickensrus.route('/account')
+@login_required
+def account():
+    image = base64.b64encode(current_user.picture).decode('ascii') if current_user.picture else None
+    return render_template('account/account.html', current_user=current_user, image=image)
+
+
+@chickensrus.route('/account/create', methods=['GET', 'POST'])
+def account_create():
+    form = AccountCreate()
 
     error = None
     if form.validate_on_submit():
@@ -29,12 +38,12 @@ def sign_up():
             login_user(user)
             return redirect(request.args.get("next") or url_for('home'))
 
-    return render_template('signup.html', form=form, error=error)
+    return render_template('account/account_create.html', form=form, error=error)
 
 
-@chickensrus.route('/signin', methods=['GET', 'POST'])
-def sign_in():
-    form = SignIn()
+@chickensrus.route('/login', methods=['GET', 'POST'])
+def account_login():
+    form = AccountLogin()
 
     error = None
     if form.validate_on_submit():
@@ -45,20 +54,14 @@ def sign_in():
         else:
             error = 'Incorrect username or password.'
 
-    return render_template('signin.html', form=form, error=error)
+    return render_template('account/account_login.html', form=form, error=error)
 
 
-@chickensrus.route('/signout')
-def sign_out():
+@chickensrus.route('/account/logout')
+def account_logout():
     logout_user()
 
     return redirect(url_for('home'))
-
-
-@chickensrus.route('/account')
-@login_required
-def account():
-    return render_template('account.html')
 
 
 @chickensrus.route('/account/edit', methods=['GET', 'POST'])
@@ -74,7 +77,7 @@ def account_edit():
     error = None
     if form.validate_on_submit():
         if current_user.password_matches(form.password.data):
-            current_user.image = form.image.data
+            current_user.picture = request.files[form.picture.name].read()
             current_user.first_name = form.first_name.data
             current_user.last_name = form.last_name.data
             current_user.username = form.username.data
@@ -87,7 +90,7 @@ def account_edit():
         else:
             error = 'Incorrect password.'
 
-    return render_template('account_edit.html', form=form, error=error)
+    return render_template('account/account_edit.html', form=form, error=error)
 
 
 @chickensrus.route('/account/delete', methods=['GET', 'POST'])
@@ -100,7 +103,7 @@ def account_delete():
         db.session.commit()
         return redirect(url_for('home'))
 
-    return render_template('account_delete.html', form=form)
+    return render_template('account/account_delete.html', form=form)
 
 
 @chickensrus.route('/listing/<int:listing_id>')
