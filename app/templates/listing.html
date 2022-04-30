@@ -6,6 +6,10 @@
 <h1>{{ listing.listing_name }}</h1>
     <p><b>Price:</b> ${{ listing.price }}</p>
     <p><b>Date Posted:</b> {{ listing.date_posted }}</p>
+    <div class="row">
+    <img src="data:;base64,{{ image }}"/>
+    </div>
     <body>{{ listing.listing_description }}</body>
+
     <div></div>
 {% endblock %}

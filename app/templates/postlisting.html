@@ -8,7 +8,7 @@
 </div>
 
 <div class="row>">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data" >
         {{ form.hidden_tag() }}
         <p>
             {{ form.listingTitle.label }}<br>
@@ -21,6 +21,10 @@
         <p>
             {{ form.listingDescription.label }}<br>
             {{ form.listingDescription(size=150) }}
+        </p>
+        <p>
+            {{ form.listingPicture.label }}<br>
+            {{ form.listingPicture }}
         </p>
         <p>{{ form.submit() }}</p>
     </form>

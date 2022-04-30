@@ -1,3 +1,5 @@
+import base64
+
 from app import chickensrus
 from app.forms import *
 from app.models import User, db, query_user, query_listing, Listing
@@ -77,23 +79,24 @@ def deleteaccount():
 @chickensrus.route('/listing/<int:listing_id>')
 def listing(listing_id):
     listing = query_listing(escape(listing_id))
-    return render_template('listing.html', listing=listing)
+    image = base64.b64encode(listing.picture).decode('ascii')
+    return render_template('listing.html', listing=listing, image=image)
 
 
 @chickensrus.route('/listing/post', methods=['GET', 'POST'])
 def postListing():
-  form = PostListing()
+    form = PostListing()
 
-  if form.validate_on_submit():
-     listing = Listing()
-     listing.listing_name = form.listingTitle.data
-     listing.listing_description = form.listingDescription.data
-     listing.price = form.listingPrice.data
-     db.session.add(listing)
-     db.session.commit()
-     return redirect(url_for('account'))
-
-  return render_template('postlisting.html', form=form)
+    if form.validate_on_submit():
+        listing = Listing()
+        listing.listing_name = form.listingTitle.data
+        listing.listing_description = form.listingDescription.data
+        listing.price = form.listingPrice.data
+        listing.picture = request.files[form.listingPicture.name].read()
+        db.session.add(listing)
+        db.session.commit()
+        return redirect(url_for('account'))
+    return render_template('postlisting.html', form=form)
 
 
 @chickensrus.route('/cart')

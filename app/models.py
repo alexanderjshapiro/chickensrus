@@ -29,6 +29,7 @@ class Listing(db.Model):
     listing_description = db.Column(db.String())
     price = db.Column(db.Float())
     date_posted = db.Column(db.Date(), default=datetime.utcnow, index=True)
+    picture = db.Column(db.Text())
 
     def __repr__(self):
         return '<Listing %s>' % self.listing_name
