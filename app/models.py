@@ -9,8 +9,11 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(32), unique=True)
     email = db.Column(db.String(254), unique=True)
     password_hash = db.Column(db.String(256))
-    date_joined = db.Column(db.DateTime(), default=datetime.utcnow, index=True)
+    date_joined = db.Column(db.DateTime(), default=datetime.utcnow)
     listings = db.relationship("Listing", backref='user', lazy='dynamic')
+    picture = db.Column(db.BLOB)
+    first_name = db.Column(db.String(64))
+    last_name = db.Column(db.String(64))
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -25,6 +28,14 @@ class User(UserMixin, db.Model):
 class Listing(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    listing_name = db.Column(db.String(128))
+    listing_description = db.Column(db.String())
+    price = db.Column(db.Float())
+    date_posted = db.Column(db.Date(), default=datetime.utcnow, index=True)
+    picture = db.Column(db.Text())
+
+    def __repr__(self):
+        return '<Listing %s>' % self.listing_name
 
 
 @login.user_loader
@@ -42,3 +53,8 @@ def query_user(fields):
         if user is not None:
             return user
     return user
+
+
+def query_listing(listing_id):
+    listing = Listing.query.get(listing_id)
+    return listing

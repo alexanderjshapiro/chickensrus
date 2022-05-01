@@ -4,10 +4,10 @@
 <a href="{{ url_for('home') }}">Home</a>
 
 <div class="row">
-    <h1>Sign Up</h1>
+    <h1>Sign In</h1>
 </div>
 
-<div class="row>">
+<div class="row">
     <form method="post">
         {{ form.hidden_tag() }}
         <p>
@@ -15,17 +15,10 @@
             {{ form.username(size=32) }}
         </p>
         <p>
-            {{ form.email.label }}<br>
-            {{ form.email(size=32) }}
-        </p>
-        <p>
             {{ form.password.label }}<br>
             {{ form.password(size=32) }}
         </p>
-        <p>
-            {{ form.repeat_password.label }}<br>
-            {{ form.repeat_password(size=32) }}
-        </p>
+        <p>{{ form.remember_me }} {{ form.remember_me.label }}</p>
         <p>{{ form.submit() }}</p>
     </form>
 
@@ -33,12 +26,10 @@
     <p class="error">{{ error }}</p>
     {% endif %}
 
-    {% for field, errors in form.errors.items() %}
     {% for error in errors %}
-    <p class="error">{{ error }}</p>
-    {% endfor %}
+    <p>{{ error }}</p>
     {% endfor %}
 
-    <a href="{{ url_for('signin') }}">Sign In</a>
+    <a href="{{ url_for('account_create') }}">Sign Up</a>
 </div>
 {% endblock %}
