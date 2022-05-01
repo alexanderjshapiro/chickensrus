@@ -17,7 +17,7 @@ chickensrus.config.from_mapping(
 db = SQLAlchemy(chickensrus)
 
 login = LoginManager(chickensrus)
-login.login_view = 'signin'
+login.login_view = 'account_login'
 
 from app import routes, models
 
