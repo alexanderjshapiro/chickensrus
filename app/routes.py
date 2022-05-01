@@ -2,7 +2,7 @@ import base64
 
 from app import chickensrus
 from app.forms import *
-from app.models import User, db, query_user
+from app.models import User, db, query_user, query_listing, Listing
 from flask import render_template, escape, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 
@@ -108,7 +108,25 @@ def account_delete():
 
 @chickensrus.route('/listing/<int:listing_id>')
 def listing(listing_id):
-    return render_template('listing.html', listing_id=escape(listing_id))
+    listing = query_listing(escape(listing_id))
+    image = base64.b64encode(listing.picture).decode('ascii')
+    return render_template('listing.html', listing=listing, image=image)
+
+
+@chickensrus.route('/listing/post', methods=['GET', 'POST'])
+def postListing():
+    form = PostListing()
+
+    if form.validate_on_submit():
+        listing = Listing()
+        listing.listing_name = form.listingTitle.data
+        listing.listing_description = form.listingDescription.data
+        listing.price = form.listingPrice.data
+        listing.picture = request.files[form.listingPicture.name].read()
+        db.session.add(listing)
+        db.session.commit()
+        return redirect(url_for('account'))
+    return render_template('postlisting.html', form=form)
 
 
 @chickensrus.route('/cart')
