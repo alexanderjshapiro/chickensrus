@@ -1,24 +1,34 @@
+from sqlalchemy.dialects.postgresql import JSONB
+
 from app import db, login
 from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
-user_cart = db.table('user_cart',
+
+user_cart = db.Table('user_cart',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('listing_id', db.Integer, db.ForeignKey('listing.id'))
 )
     
+
+savedPosts = db.Table('savedPosts', db.Model.metadata, db.Column('user_id', db.Integer, db.ForeignKey('user.id')), db.Column('listing_id', db.Integer, db.ForeignKey('listing.id')))
+
+
+
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    __tablename__ = 'user'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(32), unique=True)
     email = db.Column(db.String(254), unique=True)
     password_hash = db.Column(db.String(256))
     date_joined = db.Column(db.DateTime(), default=datetime.utcnow)
-    listings = db.relationship("Listing", backref='user', lazy='dynamic')
+    listings = db.relationship("Listing", secondary=savedPosts)
     picture = db.Column(db.BLOB)
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
     cart = db.relationship('Cart', secondary=user_cart)
+
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -31,8 +41,10 @@ class User(UserMixin, db.Model):
 
 
 class Listing(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    __tablename__ = 'listing'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # user_id = db.Column(db.Integer, primary_key=True)
     listing_name = db.Column(db.String(128))
     listing_description = db.Column(db.String())
     price = db.Column(db.Float())
