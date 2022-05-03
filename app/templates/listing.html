@@ -10,6 +10,10 @@
     <img src="data:;base64,{{ image }}"/>
     </div>
     <body>{{ listing.listing_description }}</body>
-
-    <div></div>
+    <div>
+    <form method="post" >
+    {{ form.hidden_tag() }}
+        {{ form.submit() }}
+    </form>
+    </div>
 {% endblock %}

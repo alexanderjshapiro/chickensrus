@@ -106,11 +106,19 @@ def account_delete():
     return render_template('account/account_delete.html', form=form)
 
 
-@chickensrus.route('/listing/<int:listing_id>')
+@chickensrus.route('/listing/<int:listing_id>', methods=['GET', 'POST'])
 def listing(listing_id):
     listing = query_listing(escape(listing_id))
     image = base64.b64encode(listing.picture).decode('ascii')
-    return render_template('listing.html', listing=listing, image=image)
+    form = SaveListing()
+
+    if form.validate_on_submit():
+        current_user.listings.append(listing)
+        db.session.add(current_user)
+        db.session.commit()
+
+        return redirect(url_for('account'))
+    return render_template('listing.html', listing=listing, image=image, form=form)
 
 
 @chickensrus.route('/listing/post', methods=['GET', 'POST'])
@@ -118,12 +126,12 @@ def postListing():
     form = PostListing()
 
     if form.validate_on_submit():
-        listing = Listing()
-        listing.listing_name = form.listingTitle.data
-        listing.listing_description = form.listingDescription.data
-        listing.price = form.listingPrice.data
-        listing.picture = request.files[form.listingPicture.name].read()
-        db.session.add(listing)
+        thisListing = Listing()
+        thisListing.listing_name = form.listingTitle.data
+        thisListing.listing_description = form.listingDescription.data
+        thisListing.price = form.listingPrice.data
+        thisListing.picture = request.files[form.listingPicture.name].read()
+        db.session.add(thisListing)
         db.session.commit()
         return redirect(url_for('account'))
     return render_template('postlisting.html', form=form)
