@@ -12,14 +12,14 @@ class AccountCreate(FlaskForm):
         DataRequired(),
         EqualTo('password', message='Passwords must match.')
     ])
-    submit = SubmitField('Sign Up')
+    submit = SubmitField('Create Account')
 
 
 class AccountLogin(FlaskForm):
     username = StringField('Username', validators=[DataRequired(message='Invalid username.')])
     password = PasswordField('Password', validators=[DataRequired(message='Invalid password.')])
     remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Sign In')
+    submit = SubmitField('Login')
 
 
 class AccountEdit(FlaskForm):

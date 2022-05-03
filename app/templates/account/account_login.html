@@ -1,10 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-<a href="{{ url_for('home') }}">Home</a>
-
 <div class="row">
-    <h1>Sign In</h1>
+    <h1>Login</h1>
 </div>
 
 <div class="row">
@@ -30,6 +28,6 @@
     <p>{{ error }}</p>
     {% endfor %}
 
-    <a href="{{ url_for('account_create') }}">Sign Up</a>
+    <a href="{{ url_for('account_create') }}">Don't have an account?</a>
 </div>
 {% endblock %}

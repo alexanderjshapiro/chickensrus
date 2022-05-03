@@ -1,13 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<a href="{{ url_for('home') }}">Home</a>
-
 <div class="row">
     <h1>Post Listing</h1>
 </div>
 
-<div class="row>">
+<div class="row">
     <form method="post" enctype="multipart/form-data" >
         {{ form.hidden_tag() }}
         <p>
@@ -28,7 +26,5 @@
         </p>
         <p>{{ form.submit() }}</p>
     </form>
-
 </div>
-
 {% endblock %}
