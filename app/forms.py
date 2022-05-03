@@ -52,3 +52,7 @@ class PostListing(FlaskForm):
     listingPicture = FileField('Upload Image', validators=[
         FileAllowed(['jpg', 'jpe', 'jpeg', 'png', 'gif', 'svg', 'bmp'], 'Invalid file type.')])
     submit = SubmitField('Publish Listing')
+
+
+class SaveListing(FlaskForm):
+    submit = SubmitField("Save to Wishlist")

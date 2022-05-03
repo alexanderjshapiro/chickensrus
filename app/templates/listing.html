@@ -8,4 +8,11 @@
     <img src="data:;base64,{{ image }}"/>
     <p>{{ listing.listing_description }}</p>
 </div>
+    
+<div class="row">
+    <form method="post" >
+        {{ form.hidden_tag() }}
+        {{ form.submit() }}
+    </form>
+</div>
 {% endblock %}
