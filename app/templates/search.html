@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <h1>Search Results</h1>
+</div>
+
+<div class="row">
+    {% for result in results %}
+    <p>{{ result.listing_name }} Posted: {{ result.date_posted }} ${{ result.price }}</p>
+    {% endfor %}
+</div>
+{% endblock %}
