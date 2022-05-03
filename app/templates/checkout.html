@@ -3,3 +3,63 @@
 {% block content %}
 <h1>Checkout Page</h1>
 {% endblock %}
+
+<div class="row>">
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.first_name.label }}<br>
+            {{ form.first_name(size=32) }}
+        </p>
+        <p>
+            {{ form.last_name.label }}<br>
+            {{ form.last_name(size=32) }}
+        </p>
+        <p>
+            {{ form.email.label }}<br>
+            {{ form.email(size=32) }}
+        </p>
+        <p>
+            {{ form.address.label }}<br>
+            {{ form.address(size=32) }}
+        </p>
+        <p>
+            {{ form.city.label }}<br>
+            {{ form.city(size=32) }}
+        </p>
+        <p>
+            {{ form.country.label }}<br>
+            {{ form.country(size=32) }}
+        </p>
+        <p>
+            {{ form.zipcode.label }}<br>
+            {{ form.zipcode(size=32) }}
+        </p>
+        <p>
+            {{ form.card_number.label }}<br>
+            {{ form.card_number(size=32) }}
+        </p>
+        <p>
+            {{ form.card_exp.label }}<br>
+            {{ form.card_exp(size=32) }}
+        </p>
+        <p>
+            {{ form.card_cvv.label }}<br>
+            {{ form.card_cvv(size=32) }}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
+
+    {% for field, errors in form.errors.items() %}
+    {% for error in errors %}
+    <p class="error">{{ error }}</p>
+    {% endfor %}
+    {% endfor %}
+
+    <a href="{{ url_for('home') }}">Home</a>
+</div>
+{% endblock %}
