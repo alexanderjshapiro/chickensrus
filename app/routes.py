@@ -3,7 +3,7 @@ import base64
 from app import chickensrus
 from app.forms import *
 from app.models import *
-from flask import render_template, escape, redirect, url_for, request
+from flask import render_template, escape, redirect, url_for, request, flash
 from flask_login import current_user, login_user, logout_user, login_required
 
 
@@ -123,8 +123,8 @@ def listing(listing_id):
         current_user.listings.append(listing)
         db.session.add(current_user)
         db.session.commit()
+        flash("Listing Saved")
 
-        return redirect(url_for('account'))
     return render_template('listing.html', listing=listing, image=image, form=form)
 
 
@@ -141,7 +141,7 @@ def postListing():
         thisListing.picture = request.files[form.listingPicture.name].read()
         db.session.add(thisListing)
         db.session.commit()
-        return redirect(url_for('account'))
+        return redirect(url_for('listing', listing_id=thisListing.id))
     return render_template('postlisting.html', form=form)
 
 
