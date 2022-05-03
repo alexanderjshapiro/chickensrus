@@ -139,17 +139,17 @@ def checkout():
     form = Checkout()
 
     if form.validate_on_submit():
-        checkout = Checkout()
-        checkout.first_name = form.first_name.data
-        checkout.last_name = form.last_name.data
-        checkout.email = form.email.data
-        checkout.address = form.address.data
-        checkout.city = form.city.data
-        checkout.country = form.country.data
-        checkout.zipcode = form.zipcode.data
-        checkout.card_number = form.card_number.data
-        checkout.card_exp = form.card_exp.data
-        checkout.cart_cvv = form.card_cvv.data
+        order = Checkout()
+        order.first_name = form.first_name.data
+        order.last_name = form.last_name.data
+        order.email = form.email.data
+        order.address = form.address.data
+        order.city = form.city.data
+        order.country = form.country.data
+        order.zipcode = form.zipcode.data
+        order.card_number = form.card_number.data
+        order.card_exp = form.card_exp.data
+        order.cart_cvv = form.card_cvv.data
         db.session.add(checkout)
         db.session.commit()
         return redirect(url_for('home'))
