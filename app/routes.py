@@ -130,6 +130,7 @@ def postListing():
 
 
 @chickensrus.route('/cart')
+@login_required
 def cart():
     return render_template('cart.html')
 
