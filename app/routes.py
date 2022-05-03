@@ -150,7 +150,7 @@ def checkout():
         order.card_number = form.card_number.data
         order.card_exp = form.card_exp.data
         order.cart_cvv = form.card_cvv.data
-        db.session.add(checkout)
+        db.session.add(order)
         db.session.commit()
         return redirect(url_for('home'))
     return render_template('checkout.html', form=form)
