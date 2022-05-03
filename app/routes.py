@@ -2,17 +2,24 @@ import base64
 
 from app import chickensrus
 from app.forms import *
-from app.models import User, db, query_user, query_listing, Listing
+from app.models import *
 from flask import render_template, escape, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 
 
-@chickensrus.route('/')
+@chickensrus.route('/', methods=['GET', 'POST'])
 def home():
     return render_template('home.html')
 
 
-@chickensrus.route('/account')
+@chickensrus.route('/search', methods=['GET', 'POST'])
+def search():
+    query = request.form['query']
+    results = search_listings(query)
+    return render_template('search.html', results=results)
+
+
+@chickensrus.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
     image = base64.b64encode(current_user.picture).decode('ascii') if current_user.picture else None
@@ -57,10 +64,10 @@ def account_login():
     return render_template('account/account_login.html', form=form, error=error)
 
 
-@chickensrus.route('/account/logout')
+@chickensrus.route('/account/logout', methods=['GET', 'POST'])
+@login_required
 def account_logout():
     logout_user()
-
     return redirect(url_for('home'))
 
 
@@ -106,7 +113,7 @@ def account_delete():
     return render_template('account/account_delete.html', form=form)
 
 
-@chickensrus.route('/listing/<int:listing_id>')
+@chickensrus.route('/listing/<int:listing_id>', methods=['GET', 'POST'])
 def listing(listing_id):
     listing = query_listing(escape(listing_id))
     image = base64.b64encode(listing.picture).decode('ascii')
@@ -114,6 +121,7 @@ def listing(listing_id):
 
 
 @chickensrus.route('/listing/post', methods=['GET', 'POST'])
+@login_required
 def postListing():
     form = PostListing()
 
@@ -129,11 +137,11 @@ def postListing():
     return render_template('postlisting.html', form=form)
 
 
-@chickensrus.route('/cart')
+@chickensrus.route('/cart', methods=['GET', 'POST'])
 def cart():
     return render_template('cart.html')
 
 
-@chickensrus.route('/checkout')
+@chickensrus.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     return render_template('checkout.html')

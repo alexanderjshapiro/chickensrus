@@ -44,9 +44,11 @@ class AccountDelete(FlaskForm):
     confirm_deletion = BooleanField('Confirm Deletion')
     submit = SubmitField('Delete Account')
 
+
 class PostListing(FlaskForm):
     listingTitle = StringField('Item', validators=[DataRequired(message='Title of Item needed')])
     listingPrice = DecimalField('Price', validators=[DataRequired(message='Price of Item needed')])
     listingDescription = StringField('Description')
-    listingPicture = FileField('Upload Image', validators=[FileAllowed(['jpg', 'jpe', 'jpeg', 'png', 'gif', 'svg', 'bmp'], 'Invalid file type.')])
+    listingPicture = FileField('Upload Image', validators=[
+        FileAllowed(['jpg', 'jpe', 'jpeg', 'png', 'gif', 'svg', 'bmp'], 'Invalid file type.')])
     submit = SubmitField('Publish Listing')

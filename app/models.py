@@ -43,23 +43,21 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-def search_users(fields):
+def search_users(query):
     user_query_results = []
-    for field in fields:
-        user_query_results += User.query.filter(
-            (field in User.username)
-        )
+    user_query_results += User.query.filter(
+        (User.username.contains(query))
+    )
     return user_query_results
 
 
-def search_listings(fields):
+def search_listings(query):
     listing_query_results = []
-    for field in fields:
-        listing_query_results += Listing.query.filter(
-            (field == Listing.id) |
-            (field in Listing.listing_name) |
-            (field in Listing.listing_description)
-        )
+    listing_query_results += Listing.query.filter(
+        (query == Listing.id) |
+        (Listing.listing_name.contains(query)) |
+        (Listing.listing_description.contains(query))
+    )
     return listing_query_results
 
 
