@@ -50,3 +50,6 @@ class PostListing(FlaskForm):
     listingDescription = StringField('Description')
     listingPicture = FileField('Upload Image', validators=[FileAllowed(['jpg', 'jpe', 'jpeg', 'png', 'gif', 'svg', 'bmp'], 'Invalid file type.')])
     submit = SubmitField('Publish Listing')
+    
+class Cart(FlaskForm):
+    submit = SubmitField('Add to Cart')

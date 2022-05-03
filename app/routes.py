@@ -2,7 +2,7 @@ import base64
 
 from app import chickensrus
 from app.forms import *
-from app.models import User, db, query_user, query_listing, Listing
+from app.models import User, db, query_user, query_listing, Listing, user_cart
 from flask import render_template, escape, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 
@@ -129,9 +129,11 @@ def postListing():
     return render_template('postlisting.html', form=form)
 
 
-@chickensrus.route('/cart')
+@chickensrus.route('/cart', methods=['GET', 'POST'])
 @login_required
 def cart():
+    form = Cart()
+    
     return render_template('cart.html')
 
 

@@ -3,7 +3,11 @@ from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
-
+user_cart = db.table('user_cart',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('listing_id', db.Integer, db.ForeignKey('listing.id'))
+)
+    
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), unique=True)
@@ -14,13 +18,14 @@ class User(UserMixin, db.Model):
     picture = db.Column(db.BLOB)
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
+    cart = db.relationship('Cart', secondary=user_cart)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
     def password_matches(self, password):
         return check_password_hash(self.password_hash, password)
-
+        
     def __repr__(self):
         return f'<User: {self.username} {self.email}>'
 
