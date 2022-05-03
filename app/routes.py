@@ -1,8 +1,9 @@
 import base64
+import json
 
 from app import chickensrus
 from app.forms import *
-from app.models import User, db, query_user, query_listing, Listing
+from app.models import User, db, query_user, query_listing, Listing, savedPosts
 from flask import render_template, escape, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 
@@ -106,11 +107,21 @@ def account_delete():
     return render_template('account/account_delete.html', form=form)
 
 
-@chickensrus.route('/listing/<int:listing_id>')
+@chickensrus.route('/listing/<int:listing_id>', methods=['GET', 'POST'])
 def listing(listing_id):
     listing = query_listing(escape(listing_id))
     image = base64.b64encode(listing.picture).decode('ascii')
-    return render_template('listing.html', listing=listing, image=image)
+    form = SaveListing()
+    u = User()
+    l = Listing()
+
+    if form.validate_on_submit():
+        u.listings.append(l)
+        db.session.add(u)
+        db.session.commit()
+
+        return redirect(url_for('account'))
+    return render_template('listing.html', listing=listing, image=image, form=form)
 
 
 @chickensrus.route('/listing/post', methods=['GET', 'POST'])
@@ -118,12 +129,13 @@ def postListing():
     form = PostListing()
 
     if form.validate_on_submit():
-        listing = Listing()
-        listing.listing_name = form.listingTitle.data
-        listing.listing_description = form.listingDescription.data
-        listing.price = form.listingPrice.data
-        listing.picture = request.files[form.listingPicture.name].read()
-        db.session.add(listing)
+        thisListing = Listing()
+        # listing.user_id = current_user.user_id
+        thisListing.listing_name = form.listingTitle.data
+        thisListing.listing_description = form.listingDescription.data
+        thisListing.price = form.listingPrice.data
+        thisListing.picture = request.files[form.listingPicture.name].read()
+        db.session.add(thisListing)
         db.session.commit()
         return redirect(url_for('account'))
     return render_template('postlisting.html', form=form)
