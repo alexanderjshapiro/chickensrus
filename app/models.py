@@ -43,6 +43,26 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+def search_users(fields):
+    user_query_results = []
+    for field in fields:
+        user_query_results += User.query.filter(
+            (field in User.username)
+        )
+    return user_query_results
+
+
+def search_listings(fields):
+    listing_query_results = []
+    for field in fields:
+        listing_query_results += Listing.query.filter(
+            (field == Listing.id) |
+            (field in Listing.listing_name) |
+            (field in Listing.listing_description)
+        )
+    return listing_query_results
+
+
 def query_user(fields):
     user = None
     for field in fields:
