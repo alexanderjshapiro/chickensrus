@@ -1,1 +1,8 @@
-site_name: My Docs
+site_name: Chickens "R" Us Support
+theme:
+    name: readthedocs
+nav:
+    - Home: home.md
+    - Accounts: accounts.md
+    - Listings: listings.md
+    - Orders: orders.md
