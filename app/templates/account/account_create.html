@@ -1,13 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<a href="{{ url_for('home') }}">Home</a>
-
 <div class="row">
-    <h1>Sign Up</h1>
+    <h1>Create Account</h1>
 </div>
 
-<div class="row>">
+<div class="row">
     <form method="post">
         {{ form.hidden_tag() }}
         <p>
@@ -39,6 +37,6 @@
     {% endfor %}
     {% endfor %}
 
-    <a href="{{ url_for('account_login') }}">Sign In</a>
+    <a href="{{ url_for('account_login') }}">Already have an account?</a>
 </div>
 {% endblock %}
