@@ -42,7 +42,7 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
-    email = db.Column(db.String(254), unique=True)
+    email = db.Column(db.String(254))
     address = db.Column(db.String(95))
     city = db.Column(db.String(35))
     country = db.Column(db.String(90))
