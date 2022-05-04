@@ -152,4 +152,22 @@ def cart():
 
 @chickensrus.route('/checkout', methods=['GET', 'POST'])
 def checkout():
-    return render_template('checkout.html')
+    form = Checkout()
+
+    if form.validate_on_submit():
+        order = Checkout()
+        order.first_name = form.first_name.data
+        order.last_name = form.last_name.data
+        order.email = form.email.data
+        order.address = form.address.data
+        order.city = form.city.data
+        order.country = form.country.data
+        order.zipcode = form.zipcode.data
+        order.card_number = form.card_number.data
+        order.card_exp = form.card_exp.data
+        order.cart_cvv = form.card_cvv.data
+        db.session.add(order)
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template('checkout.html', form=form)
+

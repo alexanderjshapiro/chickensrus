@@ -42,6 +42,23 @@ class Listing(db.Model):
         return '<Listing %s>' % self.listing_name
 
 
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(64))
+    last_name = db.Column(db.String(64))
+    email = db.Column(db.String(254))
+    address = db.Column(db.String(95))
+    city = db.Column(db.String(35))
+    country = db.Column(db.String(90))
+    zipcode = db.Column(db.String(11))
+    card_number = db.Column(db.String(19))
+    card_exp = db.Column(db.String(10))
+    card_cvv = db.Column(db.String(3))
+    def __repr__(self):
+        return '<Order %s>' % self.id
+
+
+
 @login.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
