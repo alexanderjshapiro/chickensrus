@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<a href="{{ url_for('home') }}">Home</a>
-
 <div class="row">
     <h1>Delete Account</h1>
 </div>
+
 <div class="row">
     <form method="post">
         <p>{{ form.confirm_deletion }} {{ form.confirm_deletion.label }}</p>

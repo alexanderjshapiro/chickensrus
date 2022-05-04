@@ -12,14 +12,14 @@ class AccountCreate(FlaskForm):
         DataRequired(),
         EqualTo('password', message='Passwords must match.')
     ])
-    submit = SubmitField('Sign Up')
+    submit = SubmitField('Create Account')
 
 
 class AccountLogin(FlaskForm):
     username = StringField('Username', validators=[DataRequired(message='Invalid username.')])
     password = PasswordField('Password', validators=[DataRequired(message='Invalid password.')])
     remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Sign In')
+    submit = SubmitField('Login')
 
 
 class AccountEdit(FlaskForm):
@@ -39,6 +39,18 @@ class AccountEdit(FlaskForm):
     )
     submit = SubmitField('Save')
 
+class Checkout(FlaskForm):
+    first_name = StringField('First Name')
+    last_name = StringField('Last Name')
+    email = StringField('Email', validators=[DataRequired(message='Invalid email address.'), Email()])
+    address = StringField('Address', validators=[DataRequired(message='Invalid address.')])
+    city = StringField('City', validators=[DataRequired(message='Please input city.')])
+    country = StringField('Country', validators=[DataRequired(message='Please input country.')])
+    zipcode = StringField('Zip Code', validators=[DataRequired(message='Please input zip code.')])
+    card_number = StringField('Card Number', validators=[DataRequired(message='Please input card number.')])
+    card_exp = StringField('Card Expiration Date', validators=[DataRequired(message='Please input card expiration date.')])
+    card_cvv = StringField('CVV', validators=[DataRequired(message='Please input card security code.')])
+    submit = SubmitField('Submit Order')
 
 class AccountDelete(FlaskForm):
     confirm_deletion = BooleanField('Confirm Deletion')
@@ -52,6 +64,7 @@ class PostListing(FlaskForm):
     listingPicture = FileField('Upload Image', validators=[
         FileAllowed(['jpg', 'jpe', 'jpeg', 'png', 'gif', 'svg', 'bmp'], 'Invalid file type.')])
     submit = SubmitField('Publish Listing')
+    
     
 class Cart(FlaskForm):
     submit = SubmitField('Add to Cart')
