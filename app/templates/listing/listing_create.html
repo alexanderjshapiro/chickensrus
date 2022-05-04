@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <h1>Post Listing</h1>
+</div>
+
+<div class="row">
+    <form method="post" enctype="multipart/form-data">
+        {{ listing_create_form.hidden_tag() }}
+        <p>
+            {{ listing_create_form.name.label }}<br>
+            {{ listing_create_form.name(size=32) }}
+        </p>
+        <p>
+            {{ listing_create_form.price.label }}<br>
+            {{ listing_create_form.price(size=32) }}
+        </p>
+        <p>
+            {{ listing_create_form.description.label }}<br>
+            {{ listing_create_form.description(size=150) }}
+        </p>
+        <p>
+            {{ listing_create_form.picture.label }}<br>
+            {{ listing_create_form.picture }}
+        </p>
+        <p>{{ listing_create_form.submit() }}</p>
+    </form>
+</div>
+{% endblock %}

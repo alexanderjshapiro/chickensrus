@@ -7,25 +7,27 @@
 
 <div class="row">
     <form method="post">
-        {{ form.hidden_tag() }}
+        {{ account_login_form.hidden_tag() }}
         <p>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}
+            {{ account_login_form.username.label }}<br>
+            {{ account_login_form.username(size=32) }}
         </p>
         <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}
+            {{ account_login_form.password.label }}<br>
+            {{ account_login_form.password(size=32) }}
         </p>
-        <p>{{ form.remember_me }} {{ form.remember_me.label }}</p>
-        <p>{{ form.submit() }}</p>
+        <p>{{ account_login_form.remember_me }} {{ account_login_form.remember_me.label }}</p>
+        <p>{{ account_login_form.submit() }}</p>
     </form>
 
     {% if error %}
     <p class="error">{{ error }}</p>
     {% endif %}
 
+    {% for field, errors in account_login_form.errors.items() %}
     {% for error in errors %}
-    <p>{{ error }}</p>
+    <p class="error">{{ error }}</p>
+    {% endfor %}
     {% endfor %}
 
     <a href="{{ url_for('account_create') }}">Don't have an account?</a>

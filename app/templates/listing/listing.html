@@ -8,16 +8,18 @@
     <img src="data:;base64,{{ image }}"/>
     <p>{{ listing.listing_description }}</p>
 </div>
-<div class="row">
-    <form method="post" >
-        {{ form.hidden_tag() }}
-        {{ form.submit() }}
-    </form>
-</div>
+
 <div class="row">
     <form method="post">
-        {{ addCart.hidden_tag() }}
-        {{ addCart.submit() }}
-  </form>
+        {{ save_for_later_form.hidden_tag() }}
+        {{ save_for_later_form.submit() }}
+    </form>
+</div>
+
+<div class="row">
+    <form method="post">
+        {{ add_to_cart_form.hidden_tag() }}
+        {{ add_to_cart_form.submit() }}
+    </form>
 </div>
 {% endblock %}

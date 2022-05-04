@@ -4,13 +4,13 @@ from flask_sqlalchemy import SQLAlchemy
 from os import urandom
 from os.path import abspath, dirname, join, exists
 
-baseDirectory = abspath(dirname(__file__))
+base_directory = abspath(dirname(__file__))
 
 chickensrus = Flask(__name__)
 
 chickensrus.config.from_mapping(
     SECRET_KEY=urandom(32),
-    SQLALCHEMY_DATABASE_URI='sqlite:///' + join(baseDirectory, 'app.db'),
+    SQLALCHEMY_DATABASE_URI='sqlite:///' + join(base_directory, 'app.db'),
     SQLALCHEMY_TRACK_MODIFICATIONS=False
 )
 

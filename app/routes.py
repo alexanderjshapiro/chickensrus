@@ -1,9 +1,9 @@
 import base64
-import json
 
 from app import chickensrus
 from app.forms import *
 from app.models import *
+from datetime import datetime
 from flask import render_template, escape, redirect, url_for, request, flash
 from flask_login import current_user, login_user, logout_user, login_required
 
@@ -29,40 +29,40 @@ def account():
 
 @chickensrus.route('/account/create', methods=['GET', 'POST'])
 def account_create():
-    form = AccountCreate()
+    account_create_form = AccountCreate()
 
     error = None
-    if form.validate_on_submit():
-        user = query_user([form.username.data, form.email.data])
-        if user is not None:
+    if account_create_form.validate_on_submit():
+        matching_user = query_user([account_create_form.username.data, account_create_form.email.data])
+        if matching_user is not None:
             error = 'Account already exists.'
         else:
-            user = User()
-            user.username = form.username.data
-            user.email = form.email.data
-            user.set_password(form.password.data)
-            db.session.add(user)
+            new_user = User()
+            new_user.username = account_create_form.username.data
+            new_user.email = account_create_form.email.data
+            new_user.set_password(account_create_form.password.data)
+            db.session.add(new_user)
             db.session.commit()
-            login_user(user)
+            login_user(new_user)
             return redirect(request.args.get("next") or url_for('home'))
 
-    return render_template('account/account_create.html', form=form, error=error)
+    return render_template('account/account_create.html', account_create_form=account_create_form, error=error)
 
 
 @chickensrus.route('/login', methods=['GET', 'POST'])
 def account_login():
-    form = AccountLogin()
+    account_login_form = AccountLogin()
 
     error = None
-    if form.validate_on_submit():
-        user = query_user([form.username.data])
-        if user is not None and user.password_matches(form.password.data):
+    if account_login_form.validate_on_submit():
+        user = query_user([account_login_form.username.data])
+        if user is not None and user.password_matches(account_login_form.password.data):
             login_user(user)
             return redirect(request.args.get("next") or url_for('home'))
         else:
             error = 'Incorrect username or password.'
 
-    return render_template('account/account_login.html', form=form, error=error)
+    return render_template('account/account_login.html', account_login_form=account_login_form, error=error)
 
 
 @chickensrus.route('/account/logout', methods=['GET', 'POST'])
@@ -75,7 +75,7 @@ def account_logout():
 @chickensrus.route('/account/edit', methods=['GET', 'POST'])
 @login_required
 def account_edit():
-    form = AccountEdit(
+    account_edit_form = AccountEdit(
         first_name=current_user.first_name,
         last_name=current_user.last_name,
         username=current_user.username,
@@ -83,98 +83,121 @@ def account_edit():
     )
 
     error = None
-    if form.validate_on_submit():
-        if current_user.password_matches(form.password.data):
-            current_user.picture = request.files[form.picture.name].read()
-            current_user.first_name = form.first_name.data
-            current_user.last_name = form.last_name.data
-            current_user.username = form.username.data
-            current_user.email = form.email.data
-            if form.new_password.data:
-                current_user.set_password(form.new_password.data)
+    if account_edit_form.validate_on_submit():
+        if current_user.password_matches(account_edit_form.password.data):
+            current_user.picture = request.files[account_edit_form.picture.name].read()
+            current_user.first_name = account_edit_form.first_name.data
+            current_user.last_name = account_edit_form.last_name.data
+            current_user.username = account_edit_form.username.data
+            current_user.email = account_edit_form.email.data
+            if account_edit_form.new_password.data:
+                current_user.set_password(account_edit_form.new_password.data)
             db.session.add(current_user)
             db.session.commit()
             return redirect(url_for('home'))
         else:
             error = 'Incorrect password.'
 
-    return render_template('account/account_edit.html', form=form, error=error)
+    return render_template('account/account_edit.html', account_edit_form=account_edit_form, error=error)
 
 
 @chickensrus.route('/account/delete', methods=['GET', 'POST'])
 @login_required
 def account_delete():
-    form = AccountDelete()
+    account_delete_form = AccountDelete()
 
-    if form.is_submitted() and form.confirm_deletion.data is True:
+    if account_delete_form.is_submitted() and account_delete_form.confirm_deletion.data is True:
         db.session.delete(current_user)
         db.session.commit()
         return redirect(url_for('home'))
 
-    return render_template('account/account_delete.html', form=form)
+    return render_template('account/account_delete.html', account_delete_form=account_delete_form)
 
 
 @chickensrus.route('/listing/<int:listing_id>', methods=['GET', 'POST'])
 def listing(listing_id):
-    listing = query_listing(escape(listing_id))
-    image = base64.b64encode(listing.picture).decode('ascii')
-    form = SaveListing()
-    addCart = Cart()
+    listing_id = escape(listing_id)
+    matching_listing = query_listing(listing_id)
 
-    if form.validate_on_submit():
-        current_user.listings.append(listing)
+    if matching_listing is None:
+        return render_template('error/404.html'), 404
+
+    image = base64.b64encode(matching_listing.picture).decode('ascii')
+
+    save_for_later_form = SaveForLater()
+    if save_for_later_form.validate_on_submit():
+        current_user.user_saved_for_later.append(matching_listing)
         db.session.add(current_user)
         db.session.commit()
         flash("Listing Saved")
-        
-    if addCart.validate_on_submit():
-        current_user.cart.append(listing)
+
+    add_to_cart_form = AddToCart()
+    if add_to_cart_form.validate_on_submit():
+        current_user.user_cart.append(matching_listing)
         db.session.add(current_user)
         db.session.commit()
         flash("Added to Cart")
 
-    return render_template('listing.html', listing=listing, image=image, form=form, addCart=addCart)
+    return render_template(
+        'listing/listing.html',
+        listing=matching_listing,
+        image=image,
+        save_for_later_form=save_for_later_form,
+        add_to_cart_form=add_to_cart_form
+    )
 
 
-@chickensrus.route('/listing/post', methods=['GET', 'POST'])
+@chickensrus.route('/listing/create', methods=['GET', 'POST'])
 @login_required
-def postListing():
-    form = PostListing()
+def listing_create():
+    listing_create_form = ListingCreate()
 
-    if form.validate_on_submit():
-        thisListing = Listing()
-        thisListing.listing_name = form.listingTitle.data
-        thisListing.listing_description = form.listingDescription.data
-        thisListing.price = form.listingPrice.data
-        thisListing.picture = request.files[form.listingPicture.name].read()
-        db.session.add(thisListing)
+    if listing_create_form.validate_on_submit():
+        new_listing = Listing()
+        new_listing.name = listing_create_form.name.data
+        new_listing.description = listing_create_form.description.data
+        new_listing.price = listing_create_form.price.data
+        new_listing.picture = request.files[listing_create_form.picture.name].read()
+        db.session.add(new_listing)
         db.session.commit()
-        return redirect(url_for('listing', listing_id=thisListing.id))
-    return render_template('postlisting.html', form=form)
+
+        current_user.user_listings.append(new_listing)
+        db.session.add(current_user)
+        db.session.commit()
+
+        return redirect(url_for('listing', listing_id=new_listing.id))
+
+    return render_template('listing/listing_create.html', listing_create_form=listing_create_form)
 
 
 @chickensrus.route('/cart', methods=['GET', 'POST'])
-def cart():  
+def cart():
     return render_template('cart.html')
-    
+
 
 @chickensrus.route('/checkout', methods=['GET', 'POST'])
 def checkout():
-    form = Checkout()
+    checkout_form = Checkout()
 
-    if form.validate_on_submit():
-        order = Checkout()
-        order.first_name = form.first_name.data
-        order.last_name = form.last_name.data
-        order.email = form.email.data
-        order.address = form.address.data
-        order.city = form.city.data
-        order.country = form.country.data
-        order.zipcode = form.zipcode.data
-        order.card_number = form.card_number.data
-        order.card_exp = form.card_exp.data
-        order.cart_cvv = form.card_cvv.data
-        db.session.add(order)
+    if checkout_form.validate_on_submit():
+        new_order = Order()
+        new_order.first_name = checkout_form.first_name.data
+        new_order.last_name = checkout_form.last_name.data
+        new_order.email = checkout_form.email.data
+        new_order.address = checkout_form.address.data
+        new_order.city = checkout_form.city.data
+        new_order.country = checkout_form.country.data
+        new_order.zip_code = checkout_form.zip_code.data
+        new_order.card_number = checkout_form.card_number.data
+        new_order.card_exp = checkout_form.card_exp.data
+        new_order.cart_cvv = checkout_form.card_cvv.data
+        db.session.add(new_order)
         db.session.commit()
         return redirect(url_for('home'))
-    return render_template('checkout.html', form=form)
+
+    return render_template('checkout.html', checkout_form=checkout_form)
+
+
+@chickensrus.errorhandler(404)
+def page_not_found(e):
+    return render_template('error/404.html'), 404

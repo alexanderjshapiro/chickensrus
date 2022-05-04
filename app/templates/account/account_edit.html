@@ -6,47 +6,47 @@
 </div>
 
 <form method="post" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
+    {{ account_edit_form.hidden_tag() }}
     <p>
-        {{ form.password.label }}<br>
-        {{ form.password(size=32) }}
+        {{ account_edit_form.password.label }}<br>
+        {{ account_edit_form.password(size=32) }}
     </p>
     <p>
-        {{ form.picture.label }}<br>
-        {{ form.picture(size=32) }}
+        {{ account_edit_form.picture.label }}<br>
+        {{ account_edit_form.picture(size=32) }}
     </p>
     <p>
-        {{ form.first_name.label }}<br>
-        {{ form.first_name(size=32) }}
+        {{ account_edit_form.first_name.label }}<br>
+        {{ account_edit_form.first_name(size=32) }}
     </p>
     <p>
-        {{ form.last_name.label }}<br>
-        {{ form.last_name(size=32) }}
+        {{ account_edit_form.last_name.label }}<br>
+        {{ account_edit_form.last_name(size=32) }}
     </p>
     <p>
-        {{ form.username.label }}<br>
-        {{ form.username(size=32) }}
+        {{ account_edit_form.username.label }}<br>
+        {{ account_edit_form.username(size=32) }}
     </p>
     <p>
-        {{ form.email.label }}<br>
-        {{ form.email(size=32) }}
+        {{ account_edit_form.email.label }}<br>
+        {{ account_edit_form.email(size=32) }}
     </p>
     <p>
-        {{ form.new_password.label }}<br>
-        {{ form.new_password(size=32) }}
+        {{ account_edit_form.new_password.label }}<br>
+        {{ account_edit_form.new_password(size=32) }}
     </p>
     <p>
-        {{ form.repeat_password.label }}<br>
-        {{ form.repeat_password(size=32) }}
+        {{ account_edit_form.repeat_password.label }}<br>
+        {{ account_edit_form.repeat_password(size=32) }}
     </p>
-    <p>{{ form.submit() }}</p>
+    <p>{{ account_edit_form.submit() }}</p>
 </form>
 
 {% if error %}
 <p class="error">{{ error }}</p>
 {% endif %}
 
-{% for field, errors in form.errors.items() %}
+{% for field, errors in account_edit_form.errors.items() %}
 {% for error in errors %}
 <p class="error">{{ error }}</p>
 {% endfor %}
