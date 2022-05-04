@@ -1,4 +1,5 @@
 import base64
+import json
 
 from app import chickensrus
 from app.forms import *
@@ -118,14 +119,21 @@ def listing(listing_id):
     listing = query_listing(escape(listing_id))
     image = base64.b64encode(listing.picture).decode('ascii')
     form = SaveListing()
+    addCart = Cart()
 
     if form.validate_on_submit():
         current_user.listings.append(listing)
         db.session.add(current_user)
         db.session.commit()
         flash("Listing Saved")
+        
+    if addCart.validate_on_submit():
+        current_user.cart.append(listing)
+        db.session.add(current_user)
+        db.session.commit()
+        flash("Added to Cart")
 
-    return render_template('listing.html', listing=listing, image=image, form=form)
+    return render_template('listing.html', listing=listing, image=image, form=form, addCart=addCart)
 
 
 @chickensrus.route('/listing/post', methods=['GET', 'POST'])
@@ -146,9 +154,9 @@ def postListing():
 
 
 @chickensrus.route('/cart', methods=['GET', 'POST'])
-def cart():
+def cart():  
     return render_template('cart.html')
-
+    
 
 @chickensrus.route('/checkout', methods=['GET', 'POST'])
 def checkout():
@@ -170,4 +178,3 @@ def checkout():
         db.session.commit()
         return redirect(url_for('home'))
     return render_template('checkout.html', form=form)
-

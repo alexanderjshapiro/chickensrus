@@ -1,9 +1,21 @@
+from sqlalchemy.dialects.postgresql import JSONB
+
 from app import db, login
 from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 savedPosts = db.Table('savedPosts', db.Model.metadata, db.Column('user_id', db.Integer, db.ForeignKey('user.id')), db.Column('listing_id', db.Integer, db.ForeignKey('listing.id')))
+
+
+user_cart = db.Table('user_cart',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('listing_id', db.Integer, db.ForeignKey('listing.id'))
+)
+    
+
+savedPosts = db.Table('savedPosts', db.Model.metadata, db.Column('user_id', db.Integer, db.ForeignKey('user.id')), db.Column('listing_id', db.Integer, db.ForeignKey('listing.id')))
+
 
 
 class User(UserMixin, db.Model):
@@ -17,6 +29,8 @@ class User(UserMixin, db.Model):
     picture = db.Column(db.BLOB)
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
+    cart = db.relationship('Cart', secondary=user_cart)
+
 
 
     def set_password(self, password):
@@ -24,7 +38,7 @@ class User(UserMixin, db.Model):
 
     def password_matches(self, password):
         return check_password_hash(self.password_hash, password)
-
+        
     def __repr__(self):
         return f'<User: {self.username} {self.email}>'
 
