@@ -52,11 +52,11 @@ class ListingCreate(FlaskForm):
 
 
 class SaveForLater(FlaskForm):
-    submit = SubmitField("Save to Wishlist")
+    submit_SaveForLater = SubmitField("Save to Wishlist")
 
 
 class AddToCart(FlaskForm):
-    submit = SubmitField('Add to Cart')
+    submit_AddToCart = SubmitField('Add to Cart')
 
 
 # Other Forms

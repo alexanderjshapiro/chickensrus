@@ -125,14 +125,14 @@ def listing(listing_id):
     image = base64.b64encode(matching_listing.picture).decode('ascii')
 
     save_for_later_form = SaveForLater()
-    if save_for_later_form.validate_on_submit():
+    if save_for_later_form.submit_SaveForLater.data and save_for_later_form.validate_on_submit():
         current_user.user_saved_for_later.append(matching_listing)
         db.session.add(current_user)
         db.session.commit()
         flash("Listing Saved")
 
     add_to_cart_form = AddToCart()
-    if add_to_cart_form.validate_on_submit():
+    if add_to_cart_form.submit_AddToCart.data and add_to_cart_form.validate_on_submit():
         current_user.user_cart.append(matching_listing)
         db.session.add(current_user)
         db.session.commit()

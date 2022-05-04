@@ -12,14 +12,14 @@
 <div class="row">
     <form method="post">
         {{ save_for_later_form.hidden_tag() }}
-        {{ save_for_later_form.submit() }}
+        {{ save_for_later_form.submit_SaveForLater() }}
     </form>
 </div>
 
 <div class="row">
     <form method="post">
         {{ add_to_cart_form.hidden_tag() }}
-        {{ add_to_cart_form.submit() }}
+        {{ add_to_cart_form.submit_AddToCart() }}
     </form>
 </div>
 {% endblock %}
