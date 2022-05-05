@@ -4,4 +4,20 @@
 <div class="row">
     <h1>Cart</h1>
 </div>
+
+<div class="row">
+    {% for listing in current_user.user_cart %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ listing.name }} (${{ listing.price }})</h5>
+            <p class="card-text">Posted: {{ listing.date_posted }}</p>
+            <a href="{{ url_for('listing', listing_id=listing.id) }}" class="btn btn-danger">View Listing</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row">
+    <a href="{{ url_for('checkout') }}" class="btn btn-danger">Checkout</a>
+</div>
 {% endblock %}
