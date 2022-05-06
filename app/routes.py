@@ -3,7 +3,6 @@ import base64
 from app import chickensrus
 from app.forms import *
 from app.models import *
-from datetime import datetime
 from flask import render_template, escape, redirect, url_for, request, flash
 from flask_login import current_user, login_user, logout_user, login_required
 
@@ -169,6 +168,11 @@ def listing_create():
 
     return render_template('listing/listing_create.html', listing_create_form=listing_create_form)
 
+@chickensrus.route('/wishlist')
+def wishlist():
+    user = current_user
+    wishlist_items = search_savedPosts(user)
+    return render_template('wishlist.html', wishlist_items=wishlist_items)
 
 @chickensrus.route('/cart', methods=['GET', 'POST'])
 def cart():

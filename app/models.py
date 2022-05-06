@@ -96,6 +96,11 @@ def search_listings(query):
     )
     return listing_query_results
 
+def search_savedPosts(user):
+    user_savedPosts = []
+    user_savedPosts += user.user_saved_for_later
+    return user_savedPosts
+
 
 def query_listing(listing_id):
     listing = Listing.query.get(listing_id)

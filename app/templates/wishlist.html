@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <h1>Your Wishlist</h1>
+</div>
+
+<div class="row">
+    {% for item in wishlist_items %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ item.name }} (${{ item.price }})</h5>
+            <p class="card-text">Posted: {{ item.date_posted }}</p>
+            <a href="{{ url_for('listing', listing_id=item.id) }}" class="btn btn-danger">View Listing</a>
+            <div class="row">
+</div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
