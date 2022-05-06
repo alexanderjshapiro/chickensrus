@@ -55,10 +55,6 @@ class SaveForLater(FlaskForm):
     submit_SaveForLater = SubmitField("Save to Wishlist")
 
 
-class AddToCart(FlaskForm):
-    submit_AddToCart = SubmitField('Add to Cart')
-
-
 # Other Forms
 class Checkout(FlaskForm):
     first_name = StringField('First Name')

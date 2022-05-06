@@ -130,19 +130,11 @@ def listing(listing_id):
         db.session.commit()
         flash("Listing Saved")
 
-    add_to_cart_form = AddToCart()
-    if add_to_cart_form.submit_AddToCart.data and add_to_cart_form.validate_on_submit():
-        current_user.user_cart.append(matching_listing)
-        db.session.add(current_user)
-        db.session.commit()
-        flash("Added to Cart")
-
     return render_template(
         'listing/listing.html',
         listing=matching_listing,
         image=image,
-        save_for_later_form=save_for_later_form,
-        add_to_cart_form=add_to_cart_form
+        save_for_later_form=save_for_later_form
     )
 
 
@@ -172,6 +164,36 @@ def listing_create():
 @chickensrus.route('/cart', methods=['GET', 'POST'])
 @login_required
 def cart():
+    return render_template('cart.html')
+
+
+@chickensrus.route('/cart/add/<int:listing_id>', methods=['GET', 'POST'])
+@login_required
+def cart_add(listing_id):
+    listing_id = escape(listing_id)
+    matching_listing = query_listing(listing_id)
+
+    if matching_listing is None:
+        return render_template('error/404.html'), 404
+
+    current_user.user_cart.append(matching_listing)
+    db.session.add(current_user)
+    db.session.commit()
+    return render_template('cart.html')
+
+
+@chickensrus.route('/cart/remove/<int:listing_id>', methods=['GET', 'POST'])
+@login_required
+def cart_remove(listing_id):
+    listing_id = escape(listing_id)
+    matching_listing = query_listing(listing_id)
+
+    if matching_listing is None:
+        return render_template('error/404.html'), 404
+
+    current_user.user_cart.remove(matching_listing)
+    db.session.add(current_user)
+    db.session.commit()
     return render_template('cart.html')
 
 
