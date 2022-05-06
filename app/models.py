@@ -124,3 +124,4 @@ class Order(db.Model):
 def query_order(order_id):
     order = Order.query.get(order_id)
     return order
+
