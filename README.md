@@ -21,10 +21,5 @@ Gantt chart: https://docs.google.com/spreadsheets/d/1QRRUHZqK_N8rgKYnih8ct4KdPDp
     python3 run.py
     ```
 ## Documentation
-
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
-
-* `mkdocs new [dir-name]` to create a new project.
 * `mkdocs serve` to start the live-reloading docs server.
 * `mkdocs build` to build the documentation site.
-* `mkdocs -h` to print help message and exit.
