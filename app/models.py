@@ -123,9 +123,10 @@ class Order(db.Model):
     card_cvv = db.Column(db.String(3))
 
     def __repr__(self):
-        return '<Order %s>' % self.id
+        return '<Order %s>' % self.id  # Displays order id
 
 
 def query_order(order_id):
     order = Order.query.get(order_id)
     return order
+

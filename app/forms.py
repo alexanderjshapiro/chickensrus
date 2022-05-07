@@ -59,6 +59,7 @@ class SaveForLater(FlaskForm):
 class Checkout(FlaskForm):
     first_name = StringField('First Name')
     last_name = StringField('Last Name')
+    # Validators used to require all inputted information before able to submit
     email = StringField('Email', validators=[DataRequired(message='Invalid email address.'), Email()])
     address = StringField('Address', validators=[DataRequired(message='Invalid address.')])
     city = StringField('City', validators=[DataRequired(message='Please input city.')])
@@ -69,3 +70,4 @@ class Checkout(FlaskForm):
                            validators=[DataRequired(message='Please input card expiration date.')])
     card_cvv = StringField('CVV', validators=[DataRequired(message='Please input card security code.')])
     submit = SubmitField('Submit Order')
+  
