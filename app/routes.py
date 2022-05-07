@@ -7,6 +7,7 @@ from flask import render_template, escape, redirect, url_for, request, flash
 from flask_login import current_user, login_user, logout_user, login_required
 
 
+# Core routes
 @chickensrus.route('/', methods=['GET', 'POST'])
 def home():
     return render_template('home.html')
@@ -19,6 +20,7 @@ def search():
     return render_template('search.html', results=results)
 
 
+# Account routes
 @chickensrus.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
@@ -113,6 +115,7 @@ def account_delete():
     return render_template('account/account_delete.html', account_delete_form=account_delete_form)
 
 
+# Listing routes
 @chickensrus.route('/listing/<int:listing_id>', methods=['GET', 'POST'])
 def listing(listing_id):
     listing_id = escape(listing_id)
@@ -121,11 +124,9 @@ def listing(listing_id):
     if matching_listing is None:
         return render_template('error/404.html'), 404
 
-    image = base64.b64encode(matching_listing.picture).decode('ascii')
-
     save_for_later_form = SaveForLater()
     if save_for_later_form.submit_SaveForLater.data and save_for_later_form.validate_on_submit():
-        current_user.user_saved_for_later.append(matching_listing)
+        current_user.user_wishlist.append(matching_listing)
         db.session.add(current_user)
         db.session.commit()
         flash("Listing Saved")
@@ -133,7 +134,6 @@ def listing(listing_id):
     return render_template(
         'listing/listing.html',
         listing=matching_listing,
-        image=image,
         save_for_later_form=save_for_later_form
     )
 
@@ -148,7 +148,8 @@ def listing_create():
         new_listing.name = listing_create_form.name.data
         new_listing.description = listing_create_form.description.data
         new_listing.price = listing_create_form.price.data
-        new_listing.picture = request.files[listing_create_form.picture.name].read()
+        new_listing.picture = 'data:;base64,' + base64.b64encode(
+            request.files[listing_create_form.picture.name].read()).decode('ascii')
         db.session.add(new_listing)
         db.session.commit()
 
@@ -161,10 +162,69 @@ def listing_create():
     return render_template('listing/listing_create.html', listing_create_form=listing_create_form)
 
 
+@chickensrus.route('/wishlist', methods=['GET', 'POST'])
+@login_required
+def wishlist():
+    count = len(current_user.user_wishlist)
+    return render_template('wishlist.html', count=count)
+
+
+@chickensrus.route('/wishlist/add/<int:listing_id>', methods=['GET', 'POST'])
+@login_required
+def wishlist_add(listing_id):
+    listing_id = escape(listing_id)
+    matching_listing = query_listing(listing_id)
+
+    if matching_listing is None:
+        return render_template('error/404.html'), 404
+
+    current_user.user_wishlist.append(matching_listing)
+    db.session.add(current_user)
+    db.session.commit()
+    return redirect(url_for('wishlist'))
+
+
+@chickensrus.route('/wishlist/remove/<int:listing_id>t', methods=['GET', 'POST'])
+@login_required
+def wishlist_remove(listing_id):
+    listing_id = escape(listing_id)
+    matching_listing = query_listing(listing_id)
+
+    if matching_listing is None:
+        return render_template('error/404.html'), 404
+
+    current_user.user_wishlist.remove(matching_listing)
+    db.session.add(current_user)
+    db.session.commit()
+    return redirect(url_for('wishlist'))
+
+
+@chickensrus.route('/wishlist/move/<int:listing_id>t', methods=['GET', 'POST'])
+@login_required
+def wishlist_move(listing_id):
+    listing_id = escape(listing_id)
+    matching_listing = query_listing(listing_id)
+
+    if matching_listing is None:
+        return render_template('error/404.html'), 404
+
+    current_user.user_wishlist.remove(matching_listing)
+    current_user.user_cart.append(matching_listing)
+    db.session.add(current_user)
+    db.session.commit()
+    return redirect(url_for('wishlist'))
+
+
+# Cart and checkout routes
 @chickensrus.route('/cart', methods=['GET', 'POST'])
 @login_required
 def cart():
-    return render_template('cart.html')
+    count = 0
+    subtotal = 0
+    for listing in current_user.user_cart:
+        count += 1
+        subtotal += listing.price
+    return render_template('cart.html', count=count, subtotal=subtotal)
 
 
 @chickensrus.route('/cart/add/<int:listing_id>', methods=['GET', 'POST'])
@@ -179,7 +239,7 @@ def cart_add(listing_id):
     current_user.user_cart.append(matching_listing)
     db.session.add(current_user)
     db.session.commit()
-    return render_template('cart.html')
+    return redirect(url_for('cart'))
 
 
 @chickensrus.route('/cart/remove/<int:listing_id>', methods=['GET', 'POST'])
@@ -194,7 +254,23 @@ def cart_remove(listing_id):
     current_user.user_cart.remove(matching_listing)
     db.session.add(current_user)
     db.session.commit()
-    return render_template('cart.html')
+    return redirect(url_for('cart'))
+
+
+@chickensrus.route('/cart/move/<int:listing_id>', methods=['GET', 'POST'])
+@login_required
+def cart_move(listing_id):
+    listing_id = escape(listing_id)
+    matching_listing = query_listing(listing_id)
+
+    if matching_listing is None:
+        return render_template('error/404.html'), 404
+
+    current_user.user_cart.remove(matching_listing)
+    current_user.user_wishlist.append(matching_listing)
+    db.session.add(current_user)
+    db.session.commit()
+    return redirect(url_for('cart'))
 
 
 @chickensrus.route('/checkout', methods=['GET', 'POST'])
@@ -221,6 +297,7 @@ def checkout():
     return render_template('checkout.html', checkout_form=checkout_form)
 
 
+# Error handlers
 @chickensrus.errorhandler(404)
 def page_not_found(e):
     return render_template('error/404.html'), 404

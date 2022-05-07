@@ -2,11 +2,15 @@
 
 {% block content %}
 <div class="row">
-    <h1>{{ listing.name }}</h1>
-    <p><b>Price:</b> ${{ listing.price }}</p>
-    <p><b>Date Posted:</b> {{ listing.date_posted }}</p>
-    <img src="data:;base64,{{ image }}"/>
-    <p>{{ listing.listing_description }}</p>
+    <div class="col-6">
+        <img class="w-100" src="{{ listing.picture }}"/>
+    </div>
+    <div class="col-6">
+        <h1>{{ listing.name }}</h1>
+        <p><b>Price:</b> ${{ listing.price }}</p>
+        <p><b>Date Posted:</b> {{ listing.date_posted }}</p>
+        <p>{{ listing.listing_description }}</p>
+    </div>
 </div>
 
 <div class="row">
