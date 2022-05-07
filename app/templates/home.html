@@ -2,12 +2,32 @@
 
 {% block content %}
 <div class="row">
-    <h1>Home Page</h1>
-</div>
-
-<div class="row">
-    <img id="chicken" src="{{ url_for('static', filename='images/chicken.jpeg') }}"/>
-    <div style="height: 1024px; background-color: lightgray">
+    {% for listing in results %}
+    <div class="col-6">
+        <div class="card my-2">
+            <div class="card-body container-fluid">
+                <div class="row">
+                    <div class="col-4">
+                        <img class="card-img" src="{{ listing.picture }}" alt="Card image cap">
+                    </div>
+                    <div class="col-8">
+                        <h4 class="card-title">{{ listing.name }}</h4>
+                        <p class="card-text">{{ listing.description[:50] }}...</p>
+                        <p class="card-text">Posted: {{ listing.date_posted }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('listing', listing_id=listing.id) }}" class="btn btn-danger">View Listing</a>
+                <a href="{{ url_for('wishlist_add', listing_id=listing.id) }}" class="btn btn-danger">Add to
+                    Wishlist</a>
+                <a href="{{ url_for('cart_add', listing_id=listing.id) }}" class="btn btn-danger">Add to
+                    Cart</a>
+                <h3 style="font-weight: 900; text-align: right; float: right">${{ "{0:,.2f}".format(listing.price)
+                    }}</h3>
+            </div>
+        </div>
     </div>
+    {% endfor %}
 </div>
 {% endblock %}

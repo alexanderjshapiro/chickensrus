@@ -10,12 +10,13 @@ from flask_login import current_user, login_user, logout_user, login_required
 # Core routes
 @chickensrus.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('home.html')
+    results = search_listings('')
+    return render_template('home.html', results=results)
 
 
 @chickensrus.route('/search', methods=['GET', 'POST'])
 def search():
-    query = request.form['query']
+    query = request.form['query'] if request.form['query'] else ''
     results = search_listings(query)
     return render_template('search.html', results=results)
 
