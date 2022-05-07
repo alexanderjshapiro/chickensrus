@@ -51,10 +51,6 @@ class ListingCreate(FlaskForm):
     submit = SubmitField('Publish Listing')
 
 
-class SaveForLater(FlaskForm):
-    submit_SaveForLater = SubmitField("Save to Wishlist")
-
-
 # Other Forms
 class Checkout(FlaskForm):
     first_name = StringField('First Name')
