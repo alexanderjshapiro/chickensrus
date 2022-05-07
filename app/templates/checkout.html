@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <h1>Checkout</h1>
+</div>
+
+<div class="row>">
+    <form method="post">
+        {{ checkout_form.hidden_tag() }}
+        <p>
+            {{ checkout_form.first_name.label }}<br>
+            {{ checkout_form.first_name(size=32) }}
+        </p>
+        <p>
+            {{ checkout_form.last_name.label }}<br>
+            {{ checkout_form.last_name(size=32) }}
+        </p>
+        <p>
+            {{ checkout_form.email.label }}<br>
+            {{ checkout_form.email(size=32) }}
+        </p>
+        <p>
+            {{ checkout_form.address.label }}<br>
+            {{ checkout_form.address(size=32) }}
+        </p>
+        <p>
+            {{ checkout_form.city.label }}<br>
+            {{ checkout_form.city(size=32) }}
+        </p>
+        <p>
+            {{ checkout_form.country.label }}<br>
+            {{ checkout_form.country(size=32) }}
+        </p>
+        <p>
+            {{ checkout_form.zip_code.label }}<br>
+            {{ checkout_form.zip_code(size=32) }}
+        </p>
+        <p>
+            {{ checkout_form.card_number.label }}<br>
+            {{ checkout_form.card_number(size=32) }}
+        </p>
+        <p>
+            {{ checkout_form.card_exp.label }}<br>
+            {{ checkout_form.card_exp(size=32) }}
+        </p>
+        <p>
+            {{ checkout_form.card_cvv.label }}<br>
+            {{ checkout_form.card_cvv(size=32) }}
+        </p>
+        <p>{{ checkout_form.submit() }}</p>
+    </form>
+
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
+
+    {% for field, errors in checkout_form.errors.items() %}
+    {% for error in errors %}
+    <p class="error">{{ error }}</p>
+    {% endfor %}
+    {% endfor %}
+</div>
+{% endblock %}

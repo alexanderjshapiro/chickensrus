@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <h1>Edit Account</h1>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+    {{ account_edit_form.hidden_tag() }}
+    <p>
+        {{ account_edit_form.password.label }}<br>
+        {{ account_edit_form.password(size=32) }}
+    </p>
+    <p>
+        {{ account_edit_form.picture.label }}<br>
+        {{ account_edit_form.picture(size=32) }}
+    </p>
+    <p>
+        {{ account_edit_form.first_name.label }}<br>
+        {{ account_edit_form.first_name(size=32) }}
+    </p>
+    <p>
+        {{ account_edit_form.last_name.label }}<br>
+        {{ account_edit_form.last_name(size=32) }}
+    </p>
+    <p>
+        {{ account_edit_form.username.label }}<br>
+        {{ account_edit_form.username(size=32) }}
+    </p>
+    <p>
+        {{ account_edit_form.email.label }}<br>
+        {{ account_edit_form.email(size=32) }}
+    </p>
+    <p>
+        {{ account_edit_form.new_password.label }}<br>
+        {{ account_edit_form.new_password(size=32) }}
+    </p>
+    <p>
+        {{ account_edit_form.repeat_password.label }}<br>
+        {{ account_edit_form.repeat_password(size=32) }}
+    </p>
+    <p>{{ account_edit_form.submit() }}</p>
+</form>
+
+{% if error %}
+<p class="error">{{ error }}</p>
+{% endif %}
+
+{% for field, errors in account_edit_form.errors.items() %}
+{% for error in errors %}
+<p class="error">{{ error }}</p>
+{% endfor %}
+{% endfor %}
+
+<div class="row">
+    <a href="{{ url_for('account_delete') }}">Delete Account</a>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1>Cart ({{ count }}) <a href="{{ url_for('wishlist') }}" class="btn btn-danger">View Wishlist</a></h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-8">
+        {% for listing in current_user.user_cart %}
+        <div class="card my-2">
+            <div class="card-body container-fluid">
+                <div class="row">
+                    <div class="col-4">
+                        <img class="card-img" src="{{ listing.picture }}" alt="Card image cap">
+                    </div>
+                    <div class="col-8">
+                        <h4 class="card-title">{{ listing.name }}</h4>
+                        <p class="card-text">{{ listing.description[:50] }}...</p>
+                        <p class="card-text">Posted: {{ listing.date_posted }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('listing', listing_id=listing.id) }}" class="btn btn-danger">View Listing</a>
+                <a href="{{ url_for('cart_move', listing_id=listing.id) }}" class="btn btn-danger">Move to Wishlist</a>
+                <a href="{{ url_for('cart_remove', listing_id=listing.id) }}" class="btn btn-danger">Remove from
+                    Cart</a>
+                <h3 style="font-weight: 900; text-align: right; float: right">${{ "{0:,.2f}".format(listing.price)
+                    }}</h3>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="col-4 container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h3>Subtotal: <span style="text-align: right; float: right; font-weight: 900;">${{ "{0:,.2f}".format(subtotal)
+                    }}</span></h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <a href="{{ url_for('home') }}" class="btn btn-danger w-100">Continue Shopping</a>
+            </div>
+            <div class="col-6">
+                {% if count == 0 %}
+                <button class="btn btn-outline-danger w-100" disabled>Checkout</button>
+                {% else %}
+                <a href="{{ url_for('checkout') }}" class="btn btn-danger w-100">Checkout</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <h1>Create Account</h1>
+</div>
+
+<div class="row">
+    <form method="post">
+        {{ account_create_form.hidden_tag() }}
+        <p>
+            {{ account_create_form.username.label }}<br>
+            {{ account_create_form.username(size=32) }}
+        </p>
+        <p>
+            {{ account_create_form.email.label }}<br>
+            {{ account_create_form.email(size=32) }}
+        </p>
+        <p>
+            {{ account_create_form.password.label }}<br>
+            {{ account_create_form.password(size=32) }}
+        </p>
+        <p>
+            {{ account_create_form.repeat_password.label }}<br>
+            {{ account_create_form.repeat_password(size=32) }}
+        </p>
+        <p>{{ account_create_form.submit() }}</p>
+    </form>
+
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
+
+    {% for field, errors in account_create_form.errors.items() %}
+    {% for error in errors %}
+    <p class="error">{{ error }}</p>
+    {% endfor %}
+    {% endfor %}
+
+    <a href="{{ url_for('account_login') }}">Already have an account?</a>
+</div>
+{% endblock %}

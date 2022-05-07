@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <h1>Delete Account</h1>
+</div>
+
+<div class="row">
+    <form method="post">
+        <p>{{ account_delete_form.confirm_deletion }} {{ account_delete_form.confirm_deletion.label }}</p>
+        <p>{{ account_delete_form.submit() }}</p>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+@charset "UTF-8";
+/* Show it is fixed to the top */
+body {
+    overflow-x: hidden;
+    padding-top: 5.5rem;
+}
+
+.flashed-messages {
+    width: 100%;
+    padding: 15px;
+    background-color: red;
+    font-weight: bolder;
+}
+
+#content {
+    padding-top: 4rem;
+    padding-bottom: 1rem;
+}
+
+#chicken {
+    width: 300px;
+}
+
+.error {
+    color: red;
+}
