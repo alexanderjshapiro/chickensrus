@@ -2,8 +2,14 @@
 
 {% block content %}
 <div class="row">
-    {% for listing in results %}
-    <div class="col-6">
+    <div class="col-12">
+        <h1>Wishlist ({{ count }}) <a href="{{ url_for('cart') }}" class="btn btn-danger">View Cart</a></h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        {% for listing in current_user.user_wishlist %}
         <div class="card my-2">
             <div class="card-body container-fluid">
                 <div class="row">
@@ -19,15 +25,14 @@
             </div>
             <div class="card-footer">
                 <a href="{{ url_for('listing', listing_id=listing.id) }}" class="btn btn-danger">View Listing</a>
-                <a href="{{ url_for('wishlist_add', listing_id=listing.id) }}" class="btn btn-danger">Add to
+                <a href="{{ url_for('wishlist_move', listing_id=listing.id) }}" class="btn btn-danger">Move to Cart</a>
+                <a href="{{ url_for('wishlist_remove', listing_id=listing.id) }}" class="btn btn-danger">Remove from
                     Wishlist</a>
-                <a href="{{ url_for('cart_add', listing_id=listing.id) }}" class="btn btn-danger">Add to
-                    Cart</a>
                 <h3 style="font-weight: 900; text-align: right; float: right">${{ "{0:,.2f}".format(listing.price)
                     }}</h3>
             </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% endblock %}
