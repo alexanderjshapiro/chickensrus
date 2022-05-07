@@ -10,13 +10,13 @@ from flask_login import current_user, login_user, logout_user, login_required
 # Core routes
 @chickensrus.route('/', methods=['GET', 'POST'])
 def home():
-    results = search_listings('')
+    results = search_listings('')  # Empty search will return all listings
     return render_template('home.html', results=results)
 
 
 @chickensrus.route('/search', methods=['GET', 'POST'])
 def search():
-    query = request.form['query'] if request.form['query'] else ''
+    query = request.form['query'] if request.form['query'] else ''  # Empty search will return all listings
     results = search_listings(query)
     return render_template('search.html', results=results)
 
@@ -25,7 +25,7 @@ def search():
 @chickensrus.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
-    image = base64.b64encode(current_user.picture).decode('ascii') if current_user.picture else None
+    image = current_user.picture if current_user.picture else None
     return render_template('account/account.html', current_user=current_user, image=image)
 
 
@@ -35,10 +35,12 @@ def account_create():
 
     error = None
     if account_create_form.validate_on_submit():
-        matching_user = query_user([account_create_form.username.data, account_create_form.email.data])
+        matching_user = query_user([account_create_form.username.data,
+                                    account_create_form.email.data])  # Try to find user by either username or email
         if matching_user is not None:
             error = 'Account already exists.'
         else:
+            # Construct new user
             new_user = User()
             new_user.username = account_create_form.username.data
             new_user.email = account_create_form.email.data
@@ -58,6 +60,7 @@ def account_login():
     error = None
     if account_login_form.validate_on_submit():
         user = query_user([account_login_form.username.data])
+        #  If the username and password match
         if user is not None and user.password_matches(account_login_form.password.data):
             login_user(user)
             return redirect(request.args.get("next") or url_for('home'))
@@ -125,17 +128,9 @@ def listing(listing_id):
     if matching_listing is None:
         return render_template('error/404.html'), 404
 
-    save_for_later_form = SaveForLater()
-    if save_for_later_form.submit_SaveForLater.data and save_for_later_form.validate_on_submit():
-        current_user.user_wishlist.append(matching_listing)
-        db.session.add(current_user)
-        db.session.commit()
-        flash("Listing Saved")
-
     return render_template(
         'listing/listing.html',
-        listing=matching_listing,
-        save_for_later_form=save_for_later_form
+        listing=matching_listing
     )
 
 
@@ -145,12 +140,13 @@ def listing_create():
     listing_create_form = ListingCreate()
 
     if listing_create_form.validate_on_submit():
+        # Construct new listing
         new_listing = Listing()
         new_listing.name = listing_create_form.name.data
         new_listing.description = listing_create_form.description.data
         new_listing.price = listing_create_form.price.data
         new_listing.picture = 'data:;base64,' + base64.b64encode(
-            request.files[listing_create_form.picture.name].read()).decode('ascii')
+            request.files[listing_create_form.picture.name].read()).decode('ascii')  # Convert image to base64
         db.session.add(new_listing)
         db.session.commit()
 
@@ -280,6 +276,7 @@ def checkout():
     checkout_form = Checkout()
 
     if checkout_form.validate_on_submit():
+        # Construct new order
         new_order = Order()
         new_order.first_name = checkout_form.first_name.data
         new_order.last_name = checkout_form.last_name.data
