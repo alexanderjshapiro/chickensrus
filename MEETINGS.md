@@ -1,5 +1,14 @@
 ## Meetings
 
+### 2022-04-30 at 23:30
+- **Attendance:** Alex, Chelsea, Davis
+- **Updates:**
+    - Alex will implement functional requirements related to search
+    - Chelsea will implement functional requirements related to saving listings to the wishlist
+    - Jordan will implement functional requirements related to the cart
+    - Davis will implement functional requirements related to checking out and orders
+- **Summary:** We regrouped and merged the code we had from the previous meeting. Now that everybody had each other's code, we worked on some of the requirements that spanned multiple areas of the code.
+
 ### 2022-04-23 at 23:30
 - **Attendance:** Alex, Chelsea, Davis
 - **Updates:**

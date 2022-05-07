@@ -8,8 +8,8 @@ Gantt chart: https://docs.google.com/spreadsheets/d/1QRRUHZqK_N8rgKYnih8ct4KdPDp
 
 - Login, logout, create account, delete account, user profiles, search: Alex
 - Users can add pictures for items they are selling, post listings, save items for later, view their saved items: Chelsea
-- Users can add listings to cart, view cart: Davis
-- Users can check out: Jordan
+- Users can add listings to cart, view cart: Jordan
+- Users can check out: Davis
 
 ## Getting Started
 1. Install dependencies:
@@ -21,10 +21,5 @@ Gantt chart: https://docs.google.com/spreadsheets/d/1QRRUHZqK_N8rgKYnih8ct4KdPDp
     python3 run.py
     ```
 ## Documentation
-
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
-
-* `mkdocs new [dir-name]` to create a new project.
 * `mkdocs serve` to start the live-reloading docs server.
 * `mkdocs build` to build the documentation site.
-* `mkdocs -h` to print help message and exit.
