@@ -162,6 +162,11 @@ def listing_create():
 
     return render_template('listing/listing_create.html', listing_create_form=listing_create_form)
 
+@chickensrus.route('/wishlist')
+def wishlist():
+    user = current_user
+    wishlist_items = search_savedPosts(user)
+    return render_template('wishlist.html', wishlist_items=wishlist_items)
 
 @chickensrus.route('/wishlist', methods=['GET', 'POST'])
 @login_required

@@ -4,6 +4,8 @@
 - Davis To (@davisto7)
 - Jordan Pastoral (@pastoraljordan)
 
+Gantt chart: https://docs.google.com/spreadsheets/d/1QRRUHZqK_N8rgKYnih8ct4KdPDpIxfwVfinX-CRcxpM/edit?usp=sharing
+
 ## Getting Started
 1. Install dependencies:
     ```shell
