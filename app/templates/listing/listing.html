@@ -2,24 +2,36 @@
 
 {% block content %}
 <div class="row">
-    <h1>{{ listing.listing_name }}</h1>
-    <p><b>Price:</b> ${{ listing.price }}</p>
-    <p><b>Date Posted:</b> {{ listing.date_posted }}</p>
-    <img src="data:;base64,{{ image }}"/>
-    <p>{{ listing.listing_description }}</p>
+    <div class="col-6">
+        <img class="w-100" src="{{ listing.picture }}"/>
+    </div>
+    <div class="col-6">
+        <h1>{{ listing.name }}</h1>
+        <p><b>Price:</b> ${{ listing.price }}</p>
+        <p><b>Date Posted:</b> {{ listing.date_posted }}</p>
+        <p>{{ listing.listing_description }}</p>
+    </div>
 </div>
 
 <div class="row">
+    {% if current_user.is_anonymous %}
+    <button class="col-3 mx-auto my-2 btn btn-outline-danger" disabled>Add to Cart</button>
+    {% elif listing in current_user.user_cart %}
+    <a href="{{ url_for('cart_remove', listing_id=listing.id) }}" class="btn btn-danger">Remove from Cart</a>
+    {% else %}
+    <a href="{{ url_for('cart_add', listing_id=listing.id) }}" class="btn btn-danger">Add to Cart</a>
+    {% endif %}
+</div>
+
+<div class="row">
+    {% if current_user.is_anonymous %}
+    <button class="col-3 mx-auto my-2 btn btn-outline-danger" disabled>Save for Later</button>
+    <a class="col-12 text-center" href="{{ url_for('account_login') }}">Login to add to your cart or save for later.</a>
+    {% else %}
     <form method="post">
         {{ save_for_later_form.hidden_tag() }}
         {{ save_for_later_form.submit_SaveForLater() }}
     </form>
-</div>
-
-<div class="row">
-    <form method="post">
-        {{ add_to_cart_form.hidden_tag() }}
-        {{ add_to_cart_form.submit_AddToCart() }}
-    </form>
+    {% endif %}
 </div>
 {% endblock %}

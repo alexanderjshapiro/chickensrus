@@ -33,8 +33,8 @@
             {{ checkout_form.country(size=32) }}
         </p>
         <p>
-            {{ checkout_form.zipcode.label }}<br>
-            {{ checkout_form.zipcode(size=32) }}
+            {{ checkout_form.zip_code.label }}<br>
+            {{ checkout_form.zip_code(size=32) }}
         </p>
         <p>
             {{ checkout_form.card_number.label }}<br>
@@ -60,7 +60,5 @@
     <p class="error">{{ error }}</p>
     {% endfor %}
     {% endfor %}
-
-    <a href="{{ url_for('home') }}">Home</a>
 </div>
 {% endblock %}

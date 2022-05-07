@@ -2,20 +2,37 @@
 
 {% block content %}
 <div class="row">
-    <h1>Your Wishlist</h1>
+    <div class="col-12">
+        <h1>Wishlist ({{ count }}) <a href="{{ url_for('cart') }}" class="btn btn-danger">View Cart</a></h1>
+    </div>
 </div>
 
 <div class="row">
-    {% for item in wishlist_items %}
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">{{ item.name }} (${{ item.price }})</h5>
-            <p class="card-text">Posted: {{ item.date_posted }}</p>
-            <a href="{{ url_for('listing', listing_id=item.id) }}" class="btn btn-danger">View Listing</a>
-            <div class="row">
-</div>
+    <div class="col-12">
+        {% for listing in current_user.user_wishlist %}
+        <div class="card my-2">
+            <div class="card-body container-fluid">
+                <div class="row">
+                    <div class="col-4">
+                        <img class="card-img" src="{{ listing.picture }}" alt="Card image cap">
+                    </div>
+                    <div class="col-8">
+                        <h4 class="card-title">{{ listing.name }}</h4>
+                        <p class="card-text">{{ listing.description[:50] }}...</p>
+                        <p class="card-text">Posted: {{ listing.date_posted }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('listing', listing_id=listing.id) }}" class="btn btn-danger">View Listing</a>
+                <a href="{{ url_for('wishlist_move', listing_id=listing.id) }}" class="btn btn-danger">Move to Cart</a>
+                <a href="{{ url_for('wishlist_remove', listing_id=listing.id) }}" class="btn btn-danger">Remove from
+                    Wishlist</a>
+                <h3 style="font-weight: 900; text-align: right; float: right">${{ "{0:,.2f}".format(listing.price)
+                    }}</h3>
+            </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% endblock %}

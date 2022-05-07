@@ -10,7 +10,7 @@ user_listing = db.Table(
     db.Column('listing_id', db.Integer, db.ForeignKey('listing.id'))
 )
 
-user_saved_for_later = db.Table(
+user_wishlist = db.Table(
     "user_saved_for_later",
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('listing_id', db.Integer, db.ForeignKey('listing.id'))
@@ -31,11 +31,11 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(254), unique=True)
     password_hash = db.Column(db.String(256))
     date_joined = db.Column(db.DateTime(), default=datetime.utcnow)
-    picture = db.Column(db.BLOB)
+    picture = db.Column(db.String())
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
     user_listings = db.relationship('Listing', secondary=user_listing)
-    user_saved_for_later = db.relationship('Listing', secondary=user_saved_for_later)
+    user_wishlist = db.relationship('Listing', secondary=user_wishlist)
     user_cart = db.relationship('Listing', secondary=user_cart)
 
     def set_password(self, password):
@@ -81,7 +81,7 @@ class Listing(db.Model):
     description = db.Column(db.String())
     price = db.Column(db.Float())
     date_posted = db.Column(db.Date(), default=datetime.utcnow, index=True)
-    picture = db.Column(db.BLOB)
+    picture = db.Column(db.String())
 
     def __repr__(self):
         return f'<Listing: {self.id} {self.name}>'
