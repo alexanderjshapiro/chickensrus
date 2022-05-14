@@ -21,17 +21,17 @@
 - Website should show most popular on homescreen
 
 ### Use Cases
-1. Users can add pictures for items they are selling
+1. Users can add picture for item they are selling
   	- **Pre-condition:** User has an account and is logged in
 
-  	- **Trigger:** User clicks "Add pictures" when on Selling page
+  	- **Trigger:** User clicks "Upload Image" when on Selling page
 
   	- **Primary Sequence:**
-	   1. Website prompts user to upload photos
-	   2. User uploads photos they want
-	   3. Website saves photos to item being listed 
+	   1. Website prompts user to upload photo
+	   2. User uploads photo they want
+	   3. Website saves photo to item being listed 
 
-  	- **Primary Postconditions:** Users can see photos of item that is sold
+  	- **Primary Postconditions:** Users can see photo of item that is sold on its listing page
   
  	 - **Alternative Sequence:**
   	   1. User tries to upload non compatible file as photo
@@ -45,7 +45,7 @@
 
   	- **Primary Sequence:**
     	1. Website saves item to user's "Wishlist" items
-    	2. Website displays message saying item has been saved  
+    	2. Website redirects user to their Wishlist page  
 
   	- **Primary Postconditions:** Users can see their saved items on their profile 
 
@@ -66,13 +66,13 @@
 	  2. The user is prompted to edit their query
 
 4. The user should be able to post a listing to sell a chicken
-	- **Pre-condition:** The user is logged in and is creating a listing
+	- **Pre-condition:** The user has an account and is logged in
 	
-	- **Trigger:** The user creates a listing
+	- **Trigger:** The user clicks 'New Listing'
 	
 	- **Primary Sequence:**
       1. The user fills out the information about their chicken (name, price, description, image)
-      2. User submits their listing
+      2. User submits their listing by clicking 'Publish Listing'
 
 	- **Primary Postconditions:** Users are able to view this listing
 	
@@ -81,7 +81,7 @@
 	  2. The user is prompted to fill in the information about their chicken
 
 5. Users are able to check out
-    - **Pre-condition:** The user is logged in and has item(s) in their cart
+    - **Pre-condition:** The user has an account, is logged in, and has item(s) in their cart
 	
     - **Trigger:** User clicks on "Checkout" 
 	
@@ -102,7 +102,7 @@
 
     - **Primary Sequence:** 
       1. Website adds that listing to their cart
-      2. Website displays message saying item has been added to their car
+      2. Website redirects user to their Cart page
 	 
 	- **Primary Postconditions:** Users are able to view all their items in their cart page
 	
