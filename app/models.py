@@ -22,6 +22,18 @@ user_cart = db.Table(
     db.Column('listing_id', db.Integer, db.ForeignKey('listing.id'))
 )
 
+user_order = db.Table(
+    "user_order",
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('order_id', db.Integer, db.ForeignKey('order.id'))
+)
+
+order_listings = db.Table(
+    "order_listings",
+    db.Column('order_id', db.Integer, db.ForeignKey('order.id')),
+    db.Column('listing_id', db.Integer, db.ForeignKey('listing.id'))
+)
+
 
 # User table and helper functions
 class User(UserMixin, db.Model):
