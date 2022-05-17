@@ -1,37 +1,62 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row">
-    <div class="col-6">
-        <img class="w-100" src="{{ listing.picture }}"/>
-    </div>
-    <div class="col-6">
-        <h1>{{ listing.name }}</h1>
-        <p><b>Price:</b> ${{ listing.price }}</p>
-        <p><b>Date Posted:</b> {{ listing.date_posted }}</p>
-        <p>{{ listing.listing_description }}</p>
-    </div>
-</div>
+    <div class="row">
+    <!--Listing picture-->
+        <div class="col-4">
+            <img class="w-100" src="{{ listing.picture }}"/>
+        </div>
+    <!--Listing information-->
+        <div class="col-4 ">
+            <h1>{{ listing.name }}</h1>
+            <p><b>Price:</b> ${{ listing.price }}</p>
+            <p><b>Date Posted:</b> {{ listing.date_posted }}</p>
+            <p>{{ listing.description }}</p>
 
-<div class="row">
-    {% if current_user.is_anonymous %}
-    <button class="col-3 mx-auto my-2 btn btn-outline-danger" disabled>Add to Cart</button>
-    {% elif listing in current_user.user_cart %}
-    <a href="{{ url_for('cart_remove', listing_id=listing.id) }}" class="btn btn-danger">Remove from Cart</a>
-    {% else %}
-    <a href="{{ url_for('cart_add', listing_id=listing.id) }}" class="btn btn-danger">Add to Cart</a>
-    {% endif %}
-</div>
+             {% if current_user.is_anonymous %}
+                <button class="col-4 mx-auto my-2 btn btn-outline-danger" disabled>Add to Cart</button>
+            {% elif listing in current_user.user_cart %}
+                <a href="{{ url_for('cart_remove', listing_id=listing.id) }}" class="col-4 mx-auto my-2 btn btn-danger" style = "width: 200px">Remove from Cart</a>
+            {% else %}
+                <a href="{{ url_for('cart_add', listing_id=listing.id) }}" class="col-4 mx-auto my-2 btn btn-danger">Add to Cart</a>
+            {% endif %}
 
-<div class="row">
-    {% if current_user.is_anonymous %}
-    <button class="col-3 mx-auto my-2 btn btn-outline-danger" disabled>Save for Later</button>
-    <a class="col-12 text-center" href="{{ url_for('account_login') }}">Login to add to your cart or save for later.</a>
-    {% else %}
-    <form method="post">
-        {{ save_for_later_form.hidden_tag() }}
-        {{ save_for_later_form.submit_SaveForLater() }}
-    </form>
-    {% endif %}
-</div>
+            {% if current_user.is_anonymous %}
+                <button class="col-4 mx-auto my-2 btn btn-outline-danger" disabled>Add to Wishlist</button>
+            {% elif listing in current_user.user_wishlist %}
+                <a href="{{ url_for('wishlist_remove', listing_id=listing.id) }}" class="col-4 mx-auto my-2 btn btn-danger" style = "width: 200px">Remove from Wishlist</a>
+            {% else %}
+                <a href="{{ url_for('wishlist_add', listing_id=listing.id) }}" class="col-4 mx-auto my-2 btn btn-danger">Add to Wishlist</a>
+            {% endif %}
+        </div>
+
+<!--Other suggested listings-->
+        <div class="col-md-3 offset-md-1" >
+            <h3>You May Also Like...</h3>
+            {% for otherListing in otherListings %}
+                {% if otherListing.id != listing.id %}
+                    <div class="card my-2">
+                        <div class="card-body container-fluid">
+                            <div class="row">
+                                <div class="col-4">
+                                    <img class="card-img" src="{{ otherListing.picture }}" alt="Card image cap">
+                                </div>
+                                <div class="col-8">
+                                    <h4 class="card-title">{{ otherListing.name }}</h4>
+                                    <p class="card-text">{{ otherListing.description[:50] }}...</p>
+                                    <p class="card-text">Posted: {{ otherListing.date_posted }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer container-fluid">
+                            <a href="{{ url_for('listing', listing_id=otherListing.id) }}" class="btn btn-danger">View
+                                Listing</a>
+                            <h5 style="font-weight: 700; text-align: right; float: right">
+                                ${{ "{0:,.2f}".format(otherListing.price) }}</h5>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

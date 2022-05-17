@@ -2,40 +2,59 @@
 
 {% block content %}
 <div class="row">
-    <h1>Checkout</h1>
+    <div class="col-12">
+        <h1>Checkout</h1>
+    </div>
 </div>
 
-<div class="row>">
-    <form method="post">
-        {{ checkout_form.hidden_tag() }}
-        <p>
-            {{ checkout_form.first_name.label }}<br>
-            {{ checkout_form.first_name(size=32) }}
-        </p>
-        <p>
-            {{ checkout_form.last_name.label }}<br>
-            {{ checkout_form.last_name(size=32) }}
-        </p>
-        <p>
-            {{ checkout_form.email.label }}<br>
-            {{ checkout_form.email(size=32) }}
-        </p>
-        <p>
-            {{ checkout_form.address.label }}<br>
-            {{ checkout_form.address(size=32) }}
-        </p>
-        <p>
-            {{ checkout_form.city.label }}<br>
-            {{ checkout_form.city(size=32) }}
-        </p>
-        <p>
-            {{ checkout_form.country.label }}<br>
-            {{ checkout_form.country(size=32) }}
-        </p>
-        <p>
-            {{ checkout_form.zip_code.label }}<br>
-            {{ checkout_form.zip_code(size=32) }}
-        </p>
+<!-- Display Total Price -->
+<div>
+<h3>Subtotal: <span style="...">${{ "{0:,.2f}".format(subtotal) }}</span></h3>
+</div>
+<!-- Display Listings -->
+<div class="col-12">
+    <h3> For Purchase:
+        {% for listing in current_user.user_cart %}
+            {{ listing.name + " " }}
+        {% endfor %}
+    </h3>
+</div>
+<form method="post">
+<div class="row">
+    <div class="col-8">
+            {{ checkout_form.hidden_tag() }}
+            <h3>Buyer Information</h3>
+            <p>
+                {{ checkout_form.first_name.label }}<br>
+                {{ checkout_form.first_name(size=32) }}
+            </p>
+            <p>
+                {{ checkout_form.last_name.label }}<br>
+                {{ checkout_form.last_name(size=32) }}
+            </p>
+            <p>
+                {{ checkout_form.email.label }}<br>
+                {{ checkout_form.email(size=32) }}
+            </p>
+            <p>
+                {{ checkout_form.address.label }}<br>
+                {{ checkout_form.address(size=32) }}
+            </p>
+            <p>
+                {{ checkout_form.city.label }}<br>
+                {{ checkout_form.city(size=32) }}
+            </p>
+            <p>
+                {{ checkout_form.country.label }}<br>
+                {{ checkout_form.country(size=32) }}
+            </p>
+            <p>
+                {{ checkout_form.zip_code.label }}<br>
+                {{ checkout_form.zip_code(size=32) }}
+            </p>
+    </div>
+    <div class="col-4">
+        <h3>Payment Information</h3>
         <p>
             {{ checkout_form.card_number.label }}<br>
             {{ checkout_form.card_number(size=32) }}
@@ -48,8 +67,14 @@
             {{ checkout_form.card_cvv.label }}<br>
             {{ checkout_form.card_cvv(size=32) }}
         </p>
-        <p>{{ checkout_form.submit() }}</p>
-    </form>
+        <p>  {{ checkout_form.submit() }}</p>
+    </div>
+        </div>
+</form>
+<!-- Return to Cart -->
+<div class="row">
+<a href="{{ url_for('cart') }}" class="btn btn-danger w-100"> Return to Cart</a>
+</div>
 
     {% if error %}
     <p class="error">{{ error }}</p>
@@ -60,5 +85,4 @@
     <p class="error">{{ error }}</p>
     {% endfor %}
     {% endfor %}
-</div>
 {% endblock %}

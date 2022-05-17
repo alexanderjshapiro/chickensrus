@@ -1,3 +1,5 @@
+import sys
+
 from app import db, login
 from datetime import datetime
 from flask_login import UserMixin
@@ -5,20 +7,32 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 # Association tables
 user_listing = db.Table(
-    "user_listing",
+    'user_listing',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('listing_id', db.Integer, db.ForeignKey('listing.id'))
 )
 
 user_wishlist = db.Table(
-    "user_saved_for_later",
+    'user_saved_for_later',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('listing_id', db.Integer, db.ForeignKey('listing.id'))
 )
 
 user_cart = db.Table(
-    "user_cart",
+    'user_cart',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('listing_id', db.Integer, db.ForeignKey('listing.id'))
+)
+
+user_orders = db.Table(
+    'user_orders',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('order_id', db.Integer, db.ForeignKey('order.id'))
+)
+
+order_listings = db.Table(
+    'order_listings',
+    db.Column('order_id', db.Integer, db.ForeignKey('order.id')),
     db.Column('listing_id', db.Integer, db.ForeignKey('listing.id'))
 )
 
@@ -34,9 +48,10 @@ class User(UserMixin, db.Model):
     picture = db.Column(db.String())
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
-    user_listings = db.relationship('Listing', secondary=user_listing)
+    user_listings = db.relationship('Listing', secondary=user_listing, backref='user')
     user_wishlist = db.relationship('Listing', secondary=user_wishlist)
     user_cart = db.relationship('Listing', secondary=user_cart)
+    user_orders = db.relationship('Order', secondary=user_orders, backref='user')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -77,6 +92,8 @@ def query_user(fields):
 class Listing(db.Model):
     __tablename__ = 'listing'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
     name = db.Column(db.String(128))
     description = db.Column(db.String())
     price = db.Column(db.Float())
@@ -87,31 +104,59 @@ class Listing(db.Model):
         return f'<Listing: {self.id} {self.name}>'
 
 
-def search_listings(query):
-    listing_query_results = []
-    listing_query_results += Listing.query.filter(
-        (query == Listing.id) |
-        (Listing.name.contains(query)) |
-        (Listing.description.contains(query))
-    )
-    return listing_query_results
-
-
-def search_savedPosts(user):
-    user_savedPosts = []
-    user_savedPosts += user.user_saved_for_later
-    return user_savedPosts
-
-
 def query_listing(listing_id):
     listing = Listing.query.get(listing_id)
     return listing
 
 
+def sort_date(element):
+    return element.date_posted
+
+
+def sort_price(element):
+    return element.price
+
+
+def sort_name(element):
+    return element.name
+
+
+def search_listings(query, results_filter=None, results_sort=None):
+    listing_query_results = []
+    listing_query_results += Listing.query.filter(
+        ((query == Listing.id) | (Listing.name.contains(query)) | (Listing.description.contains(query))) &
+        (
+            (Listing.price >= results_filter['price_min']) &
+            (Listing.price <= results_filter['price_max']) &
+            (Listing.date_posted >= results_filter['date_min']) &
+            (Listing.date_posted <= results_filter['date_max'])
+        )
+    )
+
+    if results_sort == 'date_descending':
+        listing_query_results.sort(key=sort_date, reverse=True)
+    elif results_sort == 'date_ascending':
+        listing_query_results.sort(key=sort_date)
+    elif results_sort == 'price_ascending':
+        listing_query_results.sort(key=sort_price)
+    elif results_sort == 'price_descending':
+        listing_query_results.sort(key=sort_price, reverse=True)
+    elif results_sort == 'name_descending':
+        listing_query_results.sort(key=sort_name)
+    elif results_sort == 'name_ascending':
+        listing_query_results.sort(key=sort_name, reverse=True)
+    else:
+        listing_query_results.sort(key=sort_date)
+
+    # wallahi i'm finished
+    return listing_query_results
+
+
 # Order table and helper functions
 class Order(db.Model):
     __tablename__ = 'order'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    order_listings = db.relationship('Listing', secondary=order_listings, backref='listing')
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
     email = db.Column(db.String(254))

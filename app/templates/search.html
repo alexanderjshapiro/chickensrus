@@ -2,8 +2,77 @@
 
 {% block content %}
 <div class="row">
-    <h1>Search Results</h1>
+    {% if query %}
+    <h1>Search Results for "{{ query }}" ({{ count }})</h1>
+    {% else %}
+    <h1>Search Results ({{ count }})</h1>
+    {% endif %}
 </div>
+
+<div class="row">
+    <div class="col-2">
+        <p class="my-0">Minimum Price</p>
+    </div>
+    <div class="col-2">
+        <p class="my-0">Maximum Price</p>
+    </div>
+    <div class="col-2">
+        <p class="my-0">Date Posted From</p>
+    </div>
+    <div class="col-2">
+        <p class="my-0">Date Posted To</p>
+    </div>
+    <div class="col-3">
+        <p class="my-0">Sort By</p>
+    </div>
+    <div class="col-1">
+    </div>
+</div>
+
+<form class="row" method="get" action="{{ url_for('search') }}">
+    <input name="query" class="form-control me-2 d-none" value="{{ query }}" aria-label="Query">
+    <div class="col-2">
+        <input name="price_min" class="form-control me-2"
+               value="{{ results_filter['price_min'] if results_filter['price_min'] != '' }}" placeholder="Minimum Price"
+               aria-label="Minimum Price" type="number">
+    </div>
+    <div class="col-2">
+        <input name="price_max" class="form-control me-2"
+               value="{{ results_filter['price_max'] if results_filter['price_max'] != '' }}" placeholder="Maximum Price"
+               aria-label="Maximum Price" type="number">
+    </div>
+    <div class="col-2">
+        <input name="date_min" class="form-control me-2"
+               value="{{ results_filter['date_min'] if results_filter['date_min'] != '' }}" placeholder="Date Posted From"
+               aria-label="Date Posted From" type="date">
+    </div>
+    <div class="col-2">
+        <input name="date_max" class="form-control me-2"
+               value="{{ results_filter['date_max'] if results_filter['date_max'] != '' }}" placeholder="Date Posted To"
+               aria-label="Date Posted To" type="date">
+    </div>
+    <div class="col-3">
+        <select class="form-select me-2" name="sort" id="sort">
+            <option value="date_descending" {% if results_sort==
+            'date_descending' %}selected{% endif %}>Date Posted (Newest)</option>
+            <option value="date_ascending" {% if results_sort==
+            'date_ascending' %}selected{% endif %}>Date Posted (Oldest)</option>
+            <option value="price_ascending" {% if results_sort==
+            'price_ascending' %}selected{% endif %}>Price (Lowest to Highest)</option>
+            <option value="price_descending" {% if results_sort==
+            'price_descending' %}selected{% endif %}>Price (Highest to Lowest)</option>
+            <option value="name_descending" {% if results_sort==
+            'name_descending' %}selected{% endif %}>Name (A-Z)</option>
+            <option value="name_ascending" {% if results_sort==
+            'name_ascending' %}selected{% endif %}>Name (Z-A)</option>
+        </select>
+    </div>
+    <div class="col-1">
+        <button class="btn btn-danger form-control" type="submit">Apply</button>
+
+    </div>
+
+</form>
 
 <div class="row">
     {% for listing in results %}
