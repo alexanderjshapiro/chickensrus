@@ -53,17 +53,16 @@ class ListingCreate(FlaskForm):
 
 # Other Forms
 class Checkout(FlaskForm):
-    first_name = StringField('First Name')
-    last_name = StringField('Last Name')
+    first_name = StringField('First Name',render_kw={'class':"form-control"})
+    last_name = StringField('Last Name',render_kw={'class':"form-control"})
     # Validators used to require all inputted information before able to submit
-    email = StringField('Email', validators=[DataRequired(message='Invalid email address.'), Email()])
-    address = StringField('Address', validators=[DataRequired(message='Invalid address.')])
-    city = StringField('City', validators=[DataRequired(message='Please input city.')])
-    country = StringField('Country', validators=[DataRequired(message='Please input country.')])
-    zip_code = StringField('Zip Code', validators=[DataRequired(message='Please input zip code.')])
-    card_number = StringField('Card Number', validators=[DataRequired(message='Please input card number.')])
+    email = StringField('Email', validators=[DataRequired(message='Invalid email address.'), Email()],render_kw={'class':"form-control"})
+    address = StringField('Address', validators=[DataRequired(message='Invalid address.')],render_kw={'class':"form-control"})
+    city = StringField('City', validators=[DataRequired(message='Please input city.')],render_kw={'class':"form-control"})
+    country = StringField('Country', validators=[DataRequired(message='Please input country.')],render_kw={'class':"form-control"})
+    zip_code = StringField('Zip Code', validators=[DataRequired(message='Please input zip code.')],render_kw={'class':"form-control"})
+    card_number = StringField('Card Number', validators=[DataRequired(message='Please input card number.')],render_kw={'class':"form-control"})
     card_exp = StringField('Card Expiration Date',
-                           validators=[DataRequired(message='Please input card expiration date.')])
-    card_cvv = StringField('CVV', validators=[DataRequired(message='Please input card security code.')])
-    submit = SubmitField('Submit Order')
-  
+                           validators=[DataRequired(message='Please input card expiration date.')],render_kw={'class':"form-control"})
+    card_cvv = StringField('CVV', validators=[DataRequired(message='Please input card security code.')],render_kw={'class':"form-control"})
+    submit = SubmitField('Submit Order', render_kw={'class':"btn btn-danger w-100"})

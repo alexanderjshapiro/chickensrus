@@ -273,6 +273,12 @@ def cart_move(listing_id):
 @chickensrus.route('/checkout', methods=['GET', 'POST'])
 @login_required
 def checkout():
+    count = 0
+    subtotal = 0
+    for listing in current_user.user_cart:
+        count += 1
+        subtotal += listing.price
+
     checkout_form = Checkout()
 
     if checkout_form.validate_on_submit():
@@ -292,7 +298,7 @@ def checkout():
         db.session.commit()
         return redirect(url_for('home'))
 
-    return render_template('checkout.html', checkout_form=checkout_form)
+    return render_template('checkout.html', checkout_form=checkout_form, count=count, subtotal=subtotal)
 
 
 # Error handlers
