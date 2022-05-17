@@ -14,11 +14,74 @@ def home():
     return render_template('home.html', results=results)
 
 
+def to_datetime(string):
+    date = string.split('-')
+    return datetime(int(date[0]), int(date[1]), int(date[2]))
+
+
 @chickensrus.route('/search', methods=['GET', 'POST'])
 def search():
-    query = request.form['query'] if request.form['query'] else ''  # Empty search will return all listings
-    results = search_listings(query)
-    return render_template('search.html', results=results)
+    query = request.args.get('query')
+    raw_results_filter = {
+        'price_min': request.args.get('price_min'),
+        'price_max': request.args.get('price_max'),
+        'date_min': request.args.get('date_min'),
+        'date_max': request.args.get('date_max')
+    }
+    results_sort = request.args.get('sort')
+
+    results_filter = {
+        'price_min': None,
+        'price_max': None,
+        'date_min': None,
+        'date_max': None
+    }
+
+    # Results filter data validation
+    valid_price_fields = 0
+    if raw_results_filter['price_min'] is not None and raw_results_filter['price_min'] != '':
+        valid_price_fields += 1
+        results_filter['price_min'] = int(raw_results_filter['price_min'])
+        if results_filter['price_min'] < 0:
+            raw_results_filter['price_min'] = '0'
+            results_filter['price_min'] = 0
+
+    if raw_results_filter['price_max'] is not None and raw_results_filter['price_max'] != '':
+        valid_price_fields += 1
+        results_filter['price_max'] = int(raw_results_filter['price_max'])
+        if results_filter['price_max'] < 0:
+            raw_results_filter['price_max'] = '0'
+            results_filter['price_max'] = 0
+
+    if valid_price_fields == 2:
+        if results_filter['price_max'] < results_filter['price_min']:
+            temp = raw_results_filter['price_min']
+            raw_results_filter['price_min'] = raw_results_filter['price_max']
+            raw_results_filter['price_max'] = temp
+            results_filter['price_min'] = raw_results_filter['price_min']
+            results_filter['price_max'] = raw_results_filter['price_max']
+
+    valid_date_fields = 0
+    if raw_results_filter['date_min'] is not None and raw_results_filter['date_min'] != '':
+        valid_date_fields += 1
+        results_filter['date_min'] = to_datetime(raw_results_filter['date_min'])
+
+    if raw_results_filter['date_max'] is not None and raw_results_filter['date_max'] != '':
+        valid_date_fields += 1
+        results_filter['date_max'] = to_datetime(raw_results_filter['date_max'])
+
+    if valid_date_fields == 2:
+        if raw_results_filter['date_max'] < raw_results_filter['date_min']:
+            temp = raw_results_filter['date_min']
+            raw_results_filter['date_min'] = raw_results_filter['date_max']
+            raw_results_filter['date_max'] = temp
+            results_filter['date_min'] = to_datetime(raw_results_filter['date_min'])
+            results_filter['date_max'] = to_datetime(raw_results_filter['date_max'])
+
+    results = search_listings(query, raw_results_filter, results_sort)
+
+    return render_template('search.html', query=query, count=len(results), results_filter=raw_results_filter, results_sort=results_sort,
+                           results=results)
 
 
 # Account routes

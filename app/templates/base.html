@@ -70,8 +70,8 @@
     </nav>
     <!--  Search Bar  -->
     <div class="w-100 position-fixed bg-dark p-2" style="z-index: 100;">
-        <form class="d-flex mb-2 mb-md-0 container" method="post" action="{{ url_for('search') }}">
-            <input name="query" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="d-flex mb-2 mb-md-0 container" method="get" action="{{ url_for('search') }}">
+            <input name="query" class="form-control me-2" type="search" placeholder="Search" value="{{ query }}" aria-label="Search">
             <button class="btn btn-danger" type="submit">Search</button>
         </form>
     </div>
