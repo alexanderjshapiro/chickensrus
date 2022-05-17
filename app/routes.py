@@ -347,6 +347,9 @@ def checkout():
     if checkout_form.validate_on_submit():
         # Construct new order
         new_order = Order()
+        for listing in current_user.user_cart:
+            listing.listing_order.order_id = new_order.id
+        current_user.order_id = new_order
         new_order.first_name = checkout_form.first_name.data
         new_order.last_name = checkout_form.last_name.data
         new_order.email = checkout_form.email.data

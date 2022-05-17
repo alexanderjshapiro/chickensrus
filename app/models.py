@@ -24,6 +24,18 @@ user_cart = db.Table(
     db.Column('listing_id', db.Integer, db.ForeignKey('listing.id'))
 )
 
+user_order = db.Table(
+    "user_order",
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('order_id', db.Integer, db.ForeignKey('order.id'))
+)
+
+listing_order = db.Table(
+    "listing_order",
+    db.Column('order_id', db.Integer, db.ForeignKey('order.id')),
+    db.Column('listing_id', db.Integer, db.ForeignKey('listing.id'))
+)
+
 
 # User table and helper functions
 class User(UserMixin, db.Model):
@@ -39,6 +51,7 @@ class User(UserMixin, db.Model):
     user_listings = db.relationship('Listing', secondary=user_listing)
     user_wishlist = db.relationship('Listing', secondary=user_wishlist)
     user_cart = db.relationship('Listing', secondary=user_cart)
+    user_order = db.relationship('Order', secondary=user_order)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -84,6 +97,7 @@ class Listing(db.Model):
     price = db.Column(db.Float())
     date_posted = db.Column(db.Date(), default=datetime.utcnow, index=True)
     picture = db.Column(db.String())
+    listing_order = db.relationship('Listing Order', secondary=listing_order)
 
     def __repr__(self):
         return f'<Listing: {self.id} {self.name}>'
