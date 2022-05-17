@@ -49,6 +49,7 @@ class User(UserMixin, db.Model):
     user_listings = db.relationship('Listing', secondary=user_listing)
     user_wishlist = db.relationship('Listing', secondary=user_wishlist)
     user_cart = db.relationship('Listing', secondary=user_cart)
+    user_order = db.relationship('Order', secondary=user_order)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -134,6 +135,7 @@ class Order(db.Model):
     card_number = db.Column(db.String(19))
     card_exp = db.Column(db.String(10))
     card_cvv = db.Column(db.String(3))
+    listings = db.relationship('Listings', secondary=order_listings)
 
     def __repr__(self):
         return '<Order %s>' % self.id  # Displays order id
