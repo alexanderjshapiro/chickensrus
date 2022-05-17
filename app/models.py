@@ -1,3 +1,5 @@
+import sys
+
 from app import db, login
 from datetime import datetime
 from flask_login import UserMixin
@@ -87,25 +89,56 @@ class Listing(db.Model):
         return f'<Listing: {self.id} {self.name}>'
 
 
-def search_listings(query):
-    listing_query_results = []
-    listing_query_results += Listing.query.filter(
-        (query == Listing.id) |
-        (Listing.name.contains(query)) |
-        (Listing.description.contains(query))
-    )
-    return listing_query_results
-
-
-def search_savedPosts(user):
-    user_savedPosts = []
-    user_savedPosts += user.user_saved_for_later
-    return user_savedPosts
-
-
 def query_listing(listing_id):
     listing = Listing.query.get(listing_id)
     return listing
+
+
+def sort_date(element):
+    return element.date_posted
+
+
+def sort_price(element):
+    return element.price
+
+
+def sort_name(element):
+    return element.name
+
+
+def search_listings(query, results_filter=None, results_sort=None):
+    listing_query_results = []
+    listing_query_results += Listing.query.filter(
+        ((query == Listing.id) | (Listing.name.contains(query)) | (Listing.description.contains(query))) &
+        (
+            (Listing.price >= (results_filter['price_min']
+                              if (results_filter and results_filter['price_min'] != '') else 0)) &
+            (Listing.price <= (results_filter['price_max']
+                              if (results_filter and results_filter['price_max'] != '') else sys.maxsize)) &
+            (Listing.date_posted >= (results_filter['date_min']
+                              if (results_filter and results_filter['date_min'] != '') else datetime.min)) &
+            (Listing.date_posted <= (results_filter['date_max']
+                              if (results_filter and results_filter['date_max'] != '') else datetime.max))
+        )
+    )
+
+    if results_sort == 'date_descending':
+        listing_query_results.sort(key=sort_date, reverse=True)
+    elif results_sort == 'date_ascending':
+        listing_query_results.sort(key=sort_date)
+    elif results_sort == 'price_ascending':
+        listing_query_results.sort(key=sort_price)
+    elif results_sort == 'price_descending':
+        listing_query_results.sort(key=sort_price, reverse=True)
+    elif results_sort == 'name_descending':
+        listing_query_results.sort(key=sort_name)
+    elif results_sort == 'name_ascending':
+        listing_query_results.sort(key=sort_name, reverse=True)
+    else:
+        listing_query_results.sort(key=sort_date)
+
+    # wallahi i'm finished
+    return listing_query_results
 
 
 # Order table and helper functions
