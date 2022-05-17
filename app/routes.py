@@ -187,13 +187,13 @@ def account_delete():
 def listing(listing_id):
     listing_id = escape(listing_id)
     matching_listing = query_listing(listing_id)
+    otherListings = search_listings('')  # Empty search will return all listings
 
     if matching_listing is None:
         return render_template('error/404.html'), 404
 
     return render_template(
-        'listing/listing.html',
-        listing=matching_listing
+        'listing/listing.html', listing=matching_listing, otherListings=otherListings
     )
 
 
