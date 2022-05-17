@@ -3,6 +3,7 @@
 {% block content %}
 <div class="row">
     {% for listing in results %}
+    {% if not listing.order_id %}
     <div class="col-6">
         <div class="card my-2">
             <div class="card-body container-fluid">
@@ -28,6 +29,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
     {% endfor %}
 </div>
 {% endblock %}

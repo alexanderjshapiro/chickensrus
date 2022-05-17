@@ -10,7 +10,13 @@ from flask_login import current_user, login_user, logout_user, login_required
 # Core routes
 @chickensrus.route('/', methods=['GET', 'POST'])
 def home():
-    results = search_listings('')  # Empty search will return all listings
+    results_filter = {
+        'price_min': 0,
+        'price_max': sys.maxsize,
+        'date_min': datetime.min,
+        'date_max': datetime.max
+    }
+    results = search_listings('', results_filter)  # Empty search will return all listings
     return render_template('home.html', results=results)
 
 
@@ -31,10 +37,10 @@ def search():
     results_sort = request.args.get('sort')
 
     results_filter = {
-        'price_min': None,
-        'price_max': None,
-        'date_min': None,
-        'date_max': None
+        'price_min': 0,
+        'price_max': sys.maxsize,
+        'date_min': datetime.min,
+        'date_max': datetime.max
     }
 
     # Results filter data validation
@@ -78,9 +84,10 @@ def search():
             results_filter['date_min'] = to_datetime(raw_results_filter['date_min'])
             results_filter['date_max'] = to_datetime(raw_results_filter['date_max'])
 
-    results = search_listings(query, raw_results_filter, results_sort)
+    results = search_listings(query, results_filter, results_sort)
 
-    return render_template('search.html', query=query, count=len(results), results_filter=raw_results_filter, results_sort=results_sort,
+    return render_template('search.html', query=query, count=len(results), results_filter=raw_results_filter,
+                           results_sort=results_sort,
                            results=results)
 
 
@@ -187,7 +194,13 @@ def account_delete():
 def listing(listing_id):
     listing_id = escape(listing_id)
     matching_listing = query_listing(listing_id)
-    otherListings = search_listings('')  # Empty search will return all listings
+    results_filter = {
+        'price_min': 0,
+        'price_max': sys.maxsize,
+        'date_min': datetime.min,
+        'date_max': datetime.max
+    }
+    otherListings = search_listings('', results_filter)  # Empty search will return all listings
 
     if matching_listing is None:
         return render_template('error/404.html'), 404
@@ -348,8 +361,8 @@ def checkout():
         # Construct new order
         new_order = Order()
         for listing in current_user.user_cart:
-            listing.listing_order.order_id = new_order.id
-        current_user.order_id = new_order
+            new_order.order_listings.append(listing)
+        current_user.user_orders.append(new_order)
         new_order.first_name = checkout_form.first_name.data
         new_order.last_name = checkout_form.last_name.data
         new_order.email = checkout_form.email.data
@@ -361,6 +374,7 @@ def checkout():
         new_order.card_exp = checkout_form.card_exp.data
         new_order.cart_cvv = checkout_form.card_cvv.data
         db.session.add(new_order)
+        db.session.add(current_user)
         db.session.commit()
         return redirect(url_for('home'))
 
