@@ -28,8 +28,8 @@ user_order = db.Table(
     db.Column('order_id', db.Integer, db.ForeignKey('order.id'))
 )
 
-order_listings = db.Table(
-    "order_listings",
+listing_order = db.Table(
+    "listing_order",
     db.Column('order_id', db.Integer, db.ForeignKey('order.id')),
     db.Column('listing_id', db.Integer, db.ForeignKey('listing.id'))
 )
@@ -95,6 +95,7 @@ class Listing(db.Model):
     price = db.Column(db.Float())
     date_posted = db.Column(db.Date(), default=datetime.utcnow, index=True)
     picture = db.Column(db.String())
+    listing_order = db.relationship('Listing Order', secondary=listing_order)
 
     def __repr__(self):
         return f'<Listing: {self.id} {self.name}>'
@@ -135,7 +136,6 @@ class Order(db.Model):
     card_number = db.Column(db.String(19))
     card_exp = db.Column(db.String(10))
     card_cvv = db.Column(db.String(3))
-    listings = db.relationship('Listings', secondary=order_listings)
 
     def __repr__(self):
         return '<Order %s>' % self.id  # Displays order id
